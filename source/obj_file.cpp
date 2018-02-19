@@ -46,7 +46,6 @@ obj_file::read_file()
                         std::cerr << "Error: unsupported vertex found in .obj file <" + file_path + ">\n";
                         return false;
                     }
-
                     vertices.push_back(vertex);
                 }
                 else if (word == "vt")
@@ -71,6 +70,80 @@ obj_file::read_file()
                 }
                 else if (word == "f")
                 {
+                    std::string v1, v2, v3;
+                    if (!(data >> v1 >> v2 >> v3))
+                    {
+                        std::cerr << "Error: found a face with more than 3 vertices. Only triangle meshes are supported right now. .obj file <" + file_path + ">\n";
+                        return false;
+                    }
+                    
+                    face3f face;
+
+                    char delimiter = '/';
+                    
+                    std::istringstream stream_v1(v1);
+                    std::string token;
+
+                    int token_idx = 0;
+
+                    while (std::getline(stream_v1, token, delimiter))
+                    {
+                        if (token_idx == 0)
+                        {
+                            face.v1 = std::stof(token);
+                        }
+                        else if (token_idx == 1 && !token.empty())
+                        {
+                            face.vt1 = std::stof(token);
+                        }
+                        else if (token_idx == 2 && !token.empty())
+                        {
+                            face.vn1 = std::stof(token);
+                        }
+                        ++token_idx;
+                    }
+
+                    std::istringstream stream_v2(v2);
+                    token_idx = 0;
+
+                    while (std::getline(stream_v2, token, delimiter))
+                    {
+                        if (token_idx == 0)
+                        {
+                            face.v2 = std::stof(token);
+                        }
+                        else if (token_idx == 1 && !token.empty())
+                        {
+                            face.vt2 = std::stof(token);
+                        }
+                        else if (token_idx == 2 && !token.empty())
+                        {
+                            face.vn2 = std::stof(token);
+                        }
+                        ++token_idx;
+                    }
+
+                    std::istringstream stream_v3(v3);
+                    token_idx = 0;
+
+                    while (std::getline(stream_v3, token, delimiter))
+                    {
+                        if (token_idx == 0)
+                        {
+                            face.v3 = std::stof(token);
+                        }
+                        else if (token_idx == 1 && !token.empty())
+                        {
+                            face.vt3 = std::stof(token);
+                        }
+                        else if (token_idx == 2 && !token.empty())
+                        {
+                            face.vn3 = std::stof(token);
+                        }
+                        ++token_idx;
+                    }
+
+                    faces.push_back(face);
                 }
             }
         }

@@ -20,6 +20,10 @@ typedef struct
     int v2;
     int v3;
 
+    int vn1;
+    int vn2;
+    int vn3;
+
     int vt1;
     int vt2;
     int vt3;
