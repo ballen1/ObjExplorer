@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+void framebuffer_resize_callback(GLFWwindow* window, int width, int height);
+
 int
 main(int argc, char** argv)
 {
@@ -31,6 +33,7 @@ main(int argc, char** argv)
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, framebuffer_resize_callback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -70,4 +73,10 @@ main(int argc, char** argv)
             glfwPollEvents();
         }
     }
+}
+
+void
+framebuffer_resize_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
 }
