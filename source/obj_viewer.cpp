@@ -1,5 +1,6 @@
+#include "obj_viewer.h"
 #include "obj_file.h"
-
+#include "BAL_ShaderUtility.h"
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -19,7 +20,8 @@ main(int argc, char** argv)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(500, 500, "3D Model Viewer", nullptr, nullptr);
+    window = glfwCreateWindow(OBJ_VIEWER_WINDOW_WIDTH, OBJ_VIEWER_WINDOW_HEIGHT,
+                                "3D Model Viewer", nullptr, nullptr);
 
     if (!window)
     {
@@ -37,15 +39,19 @@ main(int argc, char** argv)
         return -1;
     }
 
-    glViewport(0, 0, 500, 500);
+    glViewport(0, 0, OBJ_VIEWER_VIEWPORT_WIDTH, OBJ_VIEWER_VIEWPORT_HEIGHT);
 
-    while (!glfwWindowShouldClose(window))
+    GLuint ShaderProgram;
+    if (CreateShaderProgram(&ShaderProgram, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
-        glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        while (!glfwWindowShouldClose(window))
+        {
+            glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-        glfwSwapBuffers(window);
+            glfwSwapBuffers(window);
 
-        glfwPollEvents();
+            glfwPollEvents();
+        }
     }
 }
