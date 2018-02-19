@@ -41,13 +41,29 @@ main(int argc, char** argv)
 
     glViewport(0, 0, OBJ_VIEWER_VIEWPORT_WIDTH, OBJ_VIEWER_VIEWPORT_HEIGHT);
 
-    GLuint ShaderProgram;
-    if (CreateShaderProgram(&ShaderProgram, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
+    GLuint shader_program;
+    if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
+        glUseProgram(shader_program);
+
+        unsigned int VBO, VAO;
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(test_vertices), test_vertices, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
         while (!glfwWindowShouldClose(window))
         {
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            glBindVertexArray(VAO);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
 
             glfwSwapBuffers(window);
 
