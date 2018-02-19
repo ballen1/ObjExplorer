@@ -1,4 +1,6 @@
 \build
+\include
+\lib
 build.bat
 *.swp
 *.obj

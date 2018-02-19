@@ -90,15 +90,15 @@ obj_file::read_file()
                     {
                         if (token_idx == 0)
                         {
-                            face.v1 = std::stof(token);
+                            face.v1 = std::stof(token) - 1;
                         }
                         else if (token_idx == 1 && !token.empty())
                         {
-                            face.vt1 = std::stof(token);
+                            face.vt1 = std::stof(token) - 1;
                         }
                         else if (token_idx == 2 && !token.empty())
                         {
-                            face.vn1 = std::stof(token);
+                            face.vn1 = std::stof(token) - 1;
                         }
                         ++token_idx;
                     }
@@ -110,15 +110,15 @@ obj_file::read_file()
                     {
                         if (token_idx == 0)
                         {
-                            face.v2 = std::stof(token);
+                            face.v2 = std::stof(token) - 1;
                         }
                         else if (token_idx == 1 && !token.empty())
                         {
-                            face.vt2 = std::stof(token);
+                            face.vt2 = std::stof(token) - 1;
                         }
                         else if (token_idx == 2 && !token.empty())
                         {
-                            face.vn2 = std::stof(token);
+                            face.vn2 = std::stof(token) - 1;
                         }
                         ++token_idx;
                     }
@@ -130,15 +130,15 @@ obj_file::read_file()
                     {
                         if (token_idx == 0)
                         {
-                            face.v3 = std::stof(token);
+                            face.v3 = std::stof(token) - 1;
                         }
                         else if (token_idx == 1 && !token.empty())
                         {
-                            face.vt3 = std::stof(token);
+                            face.vt3 = std::stof(token) - 1;
                         }
                         else if (token_idx == 2 && !token.empty())
                         {
-                            face.vn3 = std::stof(token);
+                            face.vn3 = std::stof(token) - 1;
                         }
                         ++token_idx;
                     }
