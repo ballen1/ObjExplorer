@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <sstream>
 
 obj_file::obj_file()
     : file_path("")
@@ -28,7 +29,51 @@ obj_file::read_file()
 
     if (in_file.is_open())
     {
+        std::string file_line;
+        while(std::getline(in_file, file_line))
+        {
+            std::istringstream data(file_line); 
+            std::string word;
 
+            if (data >> word)
+            {
+                if (word == "v")
+                {
+                    vec3f vertex;
+                    
+                    if (!(data >> vertex.x >> vertex.y >> vertex.z))
+                    {
+                        std::cerr << "Error: unsupported vertex found in .obj file <" + file_path + ">\n";
+                        return false;
+                    }
+
+                    vertices.push_back(vertex);
+                }
+                else if (word == "vt")
+                {
+                    tex2f tex_vert;
+                    if (!(data >> tex_vert.u >> tex_vert.v))
+                    {
+                        std::cerr << "Error: unsupported texture vertex found in .obj file <" + file_path + ">\n";
+                        return false;
+                    }
+                    uvs.push_back(tex_vert);
+                }
+                else if (word == "vn")
+                {
+                    vec3f vert_norm;
+                    if (!(data >> vert_norm.x >> vert_norm.y >> vert_norm.z))
+                    {
+                        std::cerr << "Error: unsupported vertex normal found in .obj file <" + file_path + ">\n";
+                        return false;
+                    }
+                    vertex_normals.push_back(vert_norm);
+                }
+                else if (word == "f")
+                {
+                }
+            }
+        }
     }
     else
     {
@@ -51,6 +96,21 @@ obj_file::get_vertices(vec3f* vert_arr, int& size)
     else
     {
         vert_arr = nullptr;
+        size = 0;
+    }
+}
+
+void
+obj_file::get_vertex_normals(vec3f* normal_arr, int &size)
+{
+    if (size > 0)
+    {
+        normal_arr = &vertex_normals.front();
+        size = vertex_normals.size();
+    }
+    else
+    {
+        normal_arr = nullptr;
         size = 0;
     }
 }

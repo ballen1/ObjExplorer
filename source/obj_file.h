@@ -16,12 +16,14 @@ public:
     bool read_file();
 
     void get_vertices(vec3f* vert_arr, int& size);
+    void get_vertex_normals(vec3f* normal_arr, int& size);
     void get_uvs(tex2f* uv_arr, int& size);
     void get_faces(face3f* face_arr, int& size);
 
 private:
     std::string file_path;
     std::vector<vec3f> vertices;
+    std::vector<vec3f> vertex_normals;
     std::vector<tex2f> uvs;
     std::vector<face3f> faces;
 };
