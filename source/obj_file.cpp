@@ -1,6 +1,8 @@
 #include "obj_file.h"
 
 #include <iostream>
+#include <fstream>
+#include <cstring>
 
 obj_file::obj_file()
     : file_path("")
@@ -22,6 +24,19 @@ obj_file::~obj_file()
 bool
 obj_file::read_file()
 {
+    std::ifstream in_file(file_path);
+
+    if (in_file.is_open())
+    {
+
+    }
+    else
+    {
+        std::cerr << "Error: could not open .obj file <" + file_path + ">\n";
+        std::cerr << "strerror: " << std::strerror(errno) << "\n";
+        return false;
+    }
+
     return true;
 }
 
