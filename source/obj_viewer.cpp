@@ -48,6 +48,37 @@ main(int argc, char** argv)
     GLuint shader_program;
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
+
+        obj_file capsule("cube.obj");
+        capsule.read_file();
+
+        vec3f* verts;
+        int num_verts;
+
+        capsule.get_vertices(&verts, num_verts);
+
+        face3f* faces;
+        int num_faces;
+
+        capsule.get_faces(&faces, num_faces);
+
+        std::vector<float> vert_arr;
+        std::vector<unsigned int> vert_indices;
+
+        for (int v = 0; v < num_verts; v++)
+        {
+            vert_arr.push_back(verts[v].x);
+            vert_arr.push_back(verts[v].y);
+            vert_arr.push_back(verts[v].z);
+        }
+
+        for (int i = 0; i < num_faces; i++)
+        {
+            vert_indices.push_back(faces[i].v1);
+            vert_indices.push_back(faces[i].v2);
+            vert_indices.push_back(faces[i].v3);
+        }
+
         glUseProgram(shader_program);
 
         unsigned int VBO, VAO, EBO;
@@ -56,18 +87,18 @@ main(int argc, char** argv)
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(test_vertices), test_vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vert_arr.size()*sizeof(float), &vert_arr.front(), GL_STATIC_DRAW);
 
         glGenBuffers(1, &EBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(test_indices), test_indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, vert_indices.size()*sizeof(int), &vert_indices.front(), GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
-        mat4f view = translation_mat4f(0.0f, 0.0f, -15.0f);
+        mat4f view = translation_mat4f(0.0f, 0.0f, -5.0f);
 
         perspective_projection p;
         

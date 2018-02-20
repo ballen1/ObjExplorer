@@ -20,17 +20,17 @@ typedef struct
 
 typedef struct
 {
-    int v1;
-    int v2;
-    int v3;
+    unsigned int v1;
+    unsigned int v2;
+    unsigned int v3;
 
-    int vn1;
-    int vn2;
-    int vn3;
+    unsigned int vn1;
+    unsigned int vn2;
+    unsigned int vn3;
 
-    int vt1;
-    int vt2;
-    int vt3;
+    unsigned int vt1;
+    unsigned int vt2;
+    unsigned int vt3;
 } face3f;
 
 typedef struct

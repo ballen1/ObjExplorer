@@ -159,61 +159,61 @@ obj_file::read_file()
 }
 
 void
-obj_file::get_vertices(vec3f* vert_arr, int& size)
+obj_file::get_vertices(vec3f** vert_arr, int& size)
 {
-    if (size > 0)
+    if (vertices.size() > 0)
     {
-        vert_arr = &vertices.front();
+        *vert_arr = vertices.data();
         size = vertices.size();
     }
     else
     {
-        vert_arr = nullptr;
+        *vert_arr = nullptr;
         size = 0;
     }
 }
 
 void
-obj_file::get_vertex_normals(vec3f* normal_arr, int &size)
+obj_file::get_vertex_normals(vec3f** normal_arr, int &size)
 {
-    if (size > 0)
+    if (vertex_normals.size() > 0)
     {
-        normal_arr = &vertex_normals.front();
+        *normal_arr = vertex_normals.data();
         size = vertex_normals.size();
     }
     else
     {
-        normal_arr = nullptr;
+        *normal_arr = nullptr;
         size = 0;
     }
 }
 
 void
-obj_file::get_uvs(tex2f* uv_arr, int& size)
+obj_file::get_uvs(tex2f** uv_arr, int& size)
 {
-    if (size > 0)
+    if (uvs.size() > 0)
     {
-        uv_arr = &uvs.front();
+        *uv_arr = uvs.data();
         size = uvs.size();
     }
     else
     {
-        uv_arr = nullptr;
+        *uv_arr = nullptr;
         size = 0;
     }
 }
 
 void
-obj_file::get_faces(face3f* face_arr, int& size)
+obj_file::get_faces(face3f** face_arr, int& size)
 {
-    if (size > 0)
+    if (faces.size() > 0)
     {
-        face_arr = &faces.front();
+        *face_arr = faces.data();
         size = faces.size();
     }
     else
     {
-        face_arr = nullptr;
+        *face_arr = nullptr;
         size = 0;
     }
 }
