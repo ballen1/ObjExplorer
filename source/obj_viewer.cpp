@@ -1,6 +1,7 @@
 #include "obj_viewer.h"
 #include "obj_file.h"
 #include "BAL_ShaderUtility.h"
+#include "obj_math.h"
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -64,6 +65,29 @@ main(int argc, char** argv)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
 
+        // Matrix stuff is gonna go here.
+        mat4f model = Mat4f();
+        mat4f view = translation_mat4f(0.0f, 0.0f, -15.0f);
+
+        perspective_projection p;
+        
+        p.width = OBJ_VIEWER_WINDOW_WIDTH;
+        p.height = OBJ_VIEWER_WINDOW_HEIGHT;
+        p.vertical_fov = 45.0f;
+        p.near_plane = 0.1f;
+        p.far_plane = 100.0f;
+        
+        mat4f projection_mat = get_perspective_projection(p);
+
+        int uniform_loc = glGetUniformLocation(shader_program, "model");
+        glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, model.mat); 
+
+        uniform_loc = glGetUniformLocation(shader_program, "view");
+        glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, view.mat);
+
+        uniform_loc = glGetUniformLocation(shader_program, "projection");
+        glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, projection_mat.mat);
+    
         while (!glfwWindowShouldClose(window))
         {
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
