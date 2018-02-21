@@ -49,7 +49,7 @@ main(int argc, char** argv)
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
 
-        obj_file capsule("cube.obj");
+        obj_file capsule("capsule.obj");
         capsule.read_file();
 
         vec3f* verts;
@@ -87,18 +87,18 @@ main(int argc, char** argv)
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vert_arr.size()*sizeof(float), &vert_arr.front(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vert_arr.size()*sizeof(float), vert_arr.data(), GL_STATIC_DRAW);
 
         glGenBuffers(1, &EBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, vert_indices.size()*sizeof(int), &vert_indices.front(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, vert_indices.size()*sizeof(int), vert_indices.data(), GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
-        mat4f view = translation_mat4f(0.0f, 0.0f, -5.0f);
+        mat4f view = translation_mat4f(0.0f, 0.0f, -10.0f);
 
         perspective_projection p;
         
@@ -125,7 +125,7 @@ main(int argc, char** argv)
             glClear(GL_COLOR_BUFFER_BIT);
 
             glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, vert_indices.size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             glfwSwapBuffers(window);
