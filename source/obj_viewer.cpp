@@ -43,6 +43,7 @@ main(int argc, char** argv)
         return -1;
     }
 
+    glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, OBJ_VIEWER_VIEWPORT_WIDTH, OBJ_VIEWER_VIEWPORT_HEIGHT);
 
     GLuint shader_program;
@@ -133,7 +134,7 @@ main(int argc, char** argv)
         while (!glfwWindowShouldClose(window))
         {
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, vert_indices.size(), GL_UNSIGNED_INT, 0);
