@@ -73,7 +73,7 @@ obj_file::read_file()
                     std::string v1, v2, v3;
                     if (!(data >> v1 >> v2 >> v3))
                     {
-                        std::cerr << "Error: found a face with more than 3 vertices. Only triangle meshes are supported right now. .obj file <" + file_path + ">\n";
+                        std::cerr << "Error: found a face with less than 3 vertices. Only triangle meshes are supported right now. .obj file <" + file_path + ">\n";
                         return false;
                     }
                     

@@ -49,7 +49,7 @@ main(int argc, char** argv)
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
 
-        obj_file capsule("capsule.obj");
+        obj_file capsule("cube.obj");
         capsule.read_file();
 
         vec3f* verts;
@@ -98,7 +98,7 @@ main(int argc, char** argv)
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
-        mat4f view = translation_mat4f(0.0f, 0.0f, -10.0f);
+        mat4f view = translation_mat4f(0.0f, 0.0f, -50.0f);
 
         perspective_projection p;
         
