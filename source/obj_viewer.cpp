@@ -49,7 +49,7 @@ main(int argc, char** argv)
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
 
-        obj_file capsule("cube.obj");
+        obj_file capsule("donut5.obj");
         capsule.read_file();
 
         vec3f* verts;
@@ -62,14 +62,23 @@ main(int argc, char** argv)
 
         capsule.get_faces(&faces, num_faces);
 
+        vec3f* normals;
+        int num_normals;
+
+        capsule.get_vertex_normals(&normals, num_normals);
+
         std::vector<float> vert_arr;
         std::vector<unsigned int> vert_indices;
+        std::vector<float> vert_normals;
 
         for (int v = 0; v < num_verts; v++)
         {
             vert_arr.push_back(verts[v].x);
             vert_arr.push_back(verts[v].y);
             vert_arr.push_back(verts[v].z);
+            vert_arr.push_back(normals[v].x);
+            vert_arr.push_back(normals[v].y);
+            vert_arr.push_back(normals[v].z);
         }
 
         for (int i = 0; i < num_faces; i++)
@@ -93,12 +102,14 @@ main(int argc, char** argv)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, vert_indices.size()*sizeof(int), vert_indices.data(), GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
-        mat4f view = translation_mat4f(0.0f, 0.0f, -50.0f);
+        mat4f view = translation_mat4f(0.0f, -5.0f, -200.0f);
 
         perspective_projection p;
         
@@ -106,7 +117,7 @@ main(int argc, char** argv)
         p.height = OBJ_VIEWER_WINDOW_HEIGHT;
         p.vertical_fov = 45.0f;
         p.near_plane = 0.1f;
-        p.far_plane = 100.0f;
+        p.far_plane = 1000.0f;
         
         mat4f projection_mat = get_perspective_projection(p);
 
