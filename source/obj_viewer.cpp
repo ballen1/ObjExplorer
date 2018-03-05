@@ -184,23 +184,27 @@ process_input(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
         vec3f forward = get_first_person_camera_front(camera);
-        forward = s_multiply(forward, 0.1);
+        forward = s_multiply(forward, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
         camera.position = add(camera.position, forward);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
         vec3f forward = get_first_person_camera_front(camera);
-        forward = s_multiply(forward, 0.1);
+        forward = s_multiply(forward, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
         camera.position = subtract(forward, camera.position);
        
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
-
+        vec3f right = get_first_person_camera_right(camera);
+        right = s_multiply(right, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
+        camera.position = subtract(right, camera.position);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
-
+        vec3f right = get_first_person_camera_right(camera);
+        right = s_multiply(right, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
+        camera.position = add(right, camera.position);
     }
 
 }

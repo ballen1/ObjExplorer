@@ -154,6 +154,19 @@ dot_product(vec3f& v1, vec3f v2)
 }
 
 inline
+vec3f
+cross_product(vec3f v1, vec3f v2)
+{
+    vec3f v3;
+
+    v3.x = (v1.y * v2.z) - (v1.z * v2.y);
+    v3.y = (v1.z * v2.x) - (v1.x * v2.z);
+    v3.z = (v1.x * v2.y) - (v1.y * v2.x);
+
+    return v3;
+}
+
+inline
 float
 magnitude(vec3f& v)
 {
@@ -257,6 +270,16 @@ get_first_person_camera_front(first_person_camera& camera)
     front.z = -(cos(DEG2RAD * camera.pitch) * cos(DEG2RAD * camera.yaw));
 
     return normalize(front);
+}
+
+inline
+vec3f
+get_first_person_camera_right(first_person_camera& camera)
+{
+    vec3f up = Vec3f(0.0f, 1.0f, 0.0f);
+    vec3f front = get_first_person_camera_front(camera);
+
+    return cross_product(normalize(front), up);
 }
 
 #endif
