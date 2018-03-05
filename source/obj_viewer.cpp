@@ -6,6 +6,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+perspective_projection p;
+
 void framebuffer_resize_callback(GLFWwindow* window, int width, int height);
 
 int
@@ -111,8 +113,6 @@ main(int argc, char** argv)
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
         mat4f view = translation_mat4f(0.0f, -5.0f, -200.0f);
-
-        perspective_projection p;
         
         p.width = OBJ_VIEWER_WINDOW_WIDTH;
         p.height = OBJ_VIEWER_WINDOW_HEIGHT;
@@ -136,6 +136,12 @@ main(int argc, char** argv)
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+            projection_mat = get_perspective_projection(p);
+
+            uniform_loc = glGetUniformLocation(shader_program, "projection");
+            glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, projection_mat.mat);
+
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, vert_indices.size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
@@ -151,4 +157,6 @@ void
 framebuffer_resize_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+    p.width = width;
+    p.height = height;
 }
