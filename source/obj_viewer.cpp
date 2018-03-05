@@ -7,8 +7,11 @@
 #include <GLFW/glfw3.h>
 
 perspective_projection p;
+first_person_camera camera;
 
 void framebuffer_resize_callback(GLFWwindow* window, int width, int height);
+void process_input(GLFWwindow* window);
+
 
 int
 main(int argc, char** argv)
@@ -112,7 +115,15 @@ main(int argc, char** argv)
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
-        mat4f view = translation_mat4f(0.0f, -5.0f, -200.0f);
+
+        camera.position.x = 0.0f;
+        camera.position.y = 0.0f;
+        camera.position.z = 250.0f;
+
+        camera.pitch = 0.0f;
+        camera.yaw = 0.0f;
+
+        mat4f view = get_view_matrix(camera);
         
         p.width = OBJ_VIEWER_WINDOW_WIDTH;
         p.height = OBJ_VIEWER_WINDOW_HEIGHT;
@@ -133,9 +144,10 @@ main(int argc, char** argv)
     
         while (!glfwWindowShouldClose(window))
         {
+            process_input(window);
+
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
             projection_mat = get_perspective_projection(p);
 
@@ -159,4 +171,26 @@ framebuffer_resize_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
     p.width = width;
     p.height = height;
+}
+
+void
+process_input(GLFWwindow* window)
+{
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+
+    }
+
 }

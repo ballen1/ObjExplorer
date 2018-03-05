@@ -49,6 +49,25 @@ typedef struct
     float far_plane;
 } perspective_projection;
 
+typedef struct
+{
+    vec3f position;
+    float yaw;
+    float pitch;
+} first_person_camera;
+
+inline
+vec3f
+Vec3f(float x, float y, float z)
+{
+    vec3f v;
+    v.x = x;
+    v.y = y;
+    v.z = z;
+
+    return v;
+}
+
 inline
 mat4f
 Mat4f()
@@ -92,6 +111,34 @@ translation_mat4f(float x, float y, float z)
 }
 
 inline
+float
+dot_product(vec3f& v1, vec3f v2)
+{
+    return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
+}
+
+inline
+float
+magnitude(vec3f& v)
+{
+    return sqrt((v.x*v.x) + (v.y*v.y) + (v.z*v.z));
+}
+
+inline
+vec3f
+normalize(vec3f v)
+{
+    float mag = magnitude(v);
+    
+    vec3f norm;
+    norm.x = v.x / mag;
+    norm.y = v.y / mag;
+    norm.z = v.z / mag;
+
+    return norm;
+}
+
+inline
 mat4f
 get_perspective_projection(perspective_projection& perspective)
 {
@@ -121,6 +168,59 @@ get_perspective_projection(perspective_projection& perspective)
     proj.mat[15] = 0.0f;
 
     return proj;
+}
+
+inline
+mat4f
+get_view_matrix(first_person_camera& camera)
+{
+    mat4f view_mat;
+    float pitch_cos, pitch_sin, yaw_cos, yaw_sin;
+    vec3f u, v, w;
+
+    pitch_cos = cos(DEG2RAD * camera.pitch);
+    pitch_sin = sin(DEG2RAD * camera.pitch);
+    yaw_cos = cos(DEG2RAD * camera.yaw);
+    yaw_sin = sin(DEG2RAD * camera.yaw);
+
+    u = Vec3f(yaw_cos, 0.0f, yaw_sin);
+    v = Vec3f((pitch_sin * yaw_sin), pitch_cos, -(pitch_sin * yaw_cos));
+    w = Vec3f(-(pitch_cos * yaw_sin), pitch_sin, (pitch_cos * yaw_cos));
+
+    view_mat.mat[0] = u.x;
+    view_mat.mat[1] = v.x;
+    view_mat.mat[2] = w.x;
+    view_mat.mat[3] = 0.0f;
+
+    view_mat.mat[4] = u.y;
+    view_mat.mat[5] = v.y;
+    view_mat.mat[6] = w.y;
+    view_mat.mat[7] = 0.0f;
+
+    view_mat.mat[8] = u.z;
+    view_mat.mat[9] = v.z;
+    view_mat.mat[10] = w.z;
+    view_mat.mat[11] = 0.0f;
+
+    view_mat.mat[12] = -dot_product(u, camera.position);
+    view_mat.mat[13] = -dot_product(v, camera.position);
+    view_mat.mat[14] = -dot_product(w, camera.position);
+    view_mat.mat[15] = 1.0f;
+
+    return view_mat;
+}
+
+inline
+vec3f
+get_first_person_camera_front(first_person_camera& camera)
+{
+    vec3f front;
+
+    front.x = (cos(DEG2RAD * camera.pitch) * sin(DEG2RAD * camera.yaw));
+    front.y = -sin(DEG2RAD * camera.pitch);
+    front.z = -(cos(DEG2RAD * camera.pitch) * cos(DEG2RAD * camera.yaw));
+
+    return normalize(front);
 }
 
 #endif
