@@ -149,6 +149,11 @@ main(int argc, char** argv)
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            view = get_view_matrix(camera);
+
+            uniform_loc = glGetUniformLocation(shader_program, "view");
+            glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, view.mat);
+
             projection_mat = get_perspective_projection(p);
 
             uniform_loc = glGetUniformLocation(shader_program, "projection");
@@ -178,11 +183,16 @@ process_input(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
-
+        vec3f forward = get_first_person_camera_front(camera);
+        forward = s_multiply(forward, 0.1);
+        camera.position = add(camera.position, forward);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-
+        vec3f forward = get_first_person_camera_front(camera);
+        forward = s_multiply(forward, 0.1);
+        camera.position = subtract(forward, camera.position);
+       
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {

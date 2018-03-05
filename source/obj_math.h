@@ -111,6 +111,42 @@ translation_mat4f(float x, float y, float z)
 }
 
 inline
+vec3f
+s_multiply(vec3f& v, float s)
+{
+    vec3f new_v;
+    new_v.x = v.x * s;
+    new_v.y = v.y * s;
+    new_v.z = v.z * s;
+
+    return new_v;
+}
+
+inline
+vec3f
+add(vec3f v1, vec3f v2)
+{
+    vec3f v3;
+    v3.x = v1.x + v2.x;
+    v3.y = v1.y + v2.y;
+    v3.z = v1.z + v2.z;
+
+    return v3;
+}    
+
+inline
+vec3f
+subtract(vec3f v1, vec3f v2)
+{
+    vec3f v3;
+    v3.x = v2.x - v1.x;
+    v3.y = v2.y - v1.y;
+    v3.z = v2.z - v1.z;
+
+    return v3;
+}
+
+inline
 float
 dot_product(vec3f& v1, vec3f v2)
 {
