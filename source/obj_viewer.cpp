@@ -8,6 +8,9 @@
 
 perspective_projection p;
 first_person_camera camera;
+
+float last_time = -1;
+float delta_time = -1;
 float last_mouse_x = -1;
 float last_mouse_y = -1;
 
@@ -25,6 +28,8 @@ main(int argc, char** argv)
         std::cerr << "Failed to initialize GLFW\n";
         return -1;
     }
+
+    last_time = glfwGetTime();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -148,6 +153,10 @@ main(int argc, char** argv)
     
         while (!glfwWindowShouldClose(window))
         {
+            float current_time = glfwGetTime();
+            delta_time = current_time - last_time;
+            last_time = current_time;
+
             process_input(window);
 
             glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
@@ -194,8 +203,8 @@ void mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
         float x_offset = x_pos - last_mouse_x;
         float y_offset = y_pos - last_mouse_y;
 
-        camera.yaw += (x_offset * OBJ_VIEWER_CAMERA_MOUSE_SENSITIVITY);
-        camera.pitch += (y_offset * OBJ_VIEWER_CAMERA_MOUSE_SENSITIVITY);
+        camera.yaw += (x_offset * OBJ_VIEWER_CAMERA_MOUSE_SENSITIVITY * delta_time);
+        camera.pitch += (y_offset * OBJ_VIEWER_CAMERA_MOUSE_SENSITIVITY * delta_time);
 
         last_mouse_x = x_pos;
         last_mouse_y = y_pos;
@@ -208,26 +217,26 @@ process_input(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
         vec3f forward = get_first_person_camera_front(camera);
-        forward = s_multiply(forward, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
+        forward = s_multiply(forward, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
         camera.position = add(camera.position, forward);
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
         vec3f forward = get_first_person_camera_front(camera);
-        forward = s_multiply(forward, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
+        forward = s_multiply(forward, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
         camera.position = subtract(forward, camera.position);
        
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
     {
         vec3f right = get_first_person_camera_right(camera);
-        right = s_multiply(right, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
+        right = s_multiply(right, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
         camera.position = subtract(right, camera.position);
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
     {
         vec3f right = get_first_person_camera_right(camera);
-        right = s_multiply(right, OBJ_VIEWER_CAMERA_MOVEMENT_COEF);
+        right = s_multiply(right, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
         camera.position = add(right, camera.position);
     }
 
