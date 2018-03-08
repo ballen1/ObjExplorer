@@ -8,10 +8,12 @@
 
 perspective_projection p;
 first_person_camera camera;
+float last_mouse_x = -1;
+float last_mouse_y = -1;
 
 void framebuffer_resize_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double x_pos, double y_pos);
 void process_input(GLFWwindow* window);
-
 
 int
 main(int argc, char** argv)
@@ -40,6 +42,8 @@ main(int argc, char** argv)
 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_resize_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -176,6 +180,26 @@ framebuffer_resize_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
     p.width = width;
     p.height = height;
+}
+
+void mouse_callback(GLFWwindow* window, double x_pos, double y_pos)
+{
+    if (last_mouse_x < 0 && last_mouse_y < 0)
+    {
+        last_mouse_x = x_pos;
+        last_mouse_y = y_pos;
+    }
+    else
+    {
+        float x_offset = x_pos - last_mouse_x;
+        float y_offset = y_pos - last_mouse_y;
+
+        camera.yaw += (x_offset * OBJ_VIEWER_CAMERA_MOUSE_SENSITIVITY);
+        camera.pitch += (y_offset * OBJ_VIEWER_CAMERA_MOUSE_SENSITIVITY);
+
+        last_mouse_x = x_pos;
+        last_mouse_y = y_pos;
+    }
 }
 
 void
