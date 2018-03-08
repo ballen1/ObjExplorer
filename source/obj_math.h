@@ -279,7 +279,7 @@ get_first_person_camera_right(first_person_camera& camera)
     vec3f up = Vec3f(0.0f, 1.0f, 0.0f);
     vec3f front = get_first_person_camera_front(camera);
 
-    return cross_product(normalize(front), up);
+    return normalize(cross_product(front, up));
 }
 
 #endif
