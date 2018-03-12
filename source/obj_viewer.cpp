@@ -5,6 +5,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "e2_mesh.h"
 
 perspective_projection p;
 first_person_camera camera;
@@ -63,6 +64,7 @@ main(int argc, char** argv)
     GLuint shader_program;
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
+        e2_mesh diamondmesh("magnolia.obj");
 
         obj_file capsule("donut5.obj");
         capsule.read_file();
