@@ -20,6 +20,9 @@ public:
     void get_uvs(tex2f** uv_arr, int& size);
     void get_faces(face3f** face_arr, int& size);
 
+    bool has_vertex_normals();
+    bool has_uvs();
+
 private:
     std::string file_path;
     std::vector<vec3f> vertices;

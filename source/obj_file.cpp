@@ -217,3 +217,15 @@ obj_file::get_faces(face3f** face_arr, int& size)
         size = 0;
     }
 }
+
+bool
+obj_file::has_vertex_normals()
+{
+    return (vertex_normals.size() > 0);
+}
+
+bool
+obj_file::has_uvs()
+{
+    return (uvs.size() > 0);
+}
