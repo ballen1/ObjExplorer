@@ -64,7 +64,7 @@ main(int argc, char** argv)
     GLuint shader_program;
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
-        e2_mesh diamondmesh("magnolia.obj");
+        //e2_mesh diamondmesh("magnolia.obj");
 
         obj_file capsule("donut5.obj");
         capsule.read_file();
@@ -241,5 +241,20 @@ process_input(GLFWwindow* window)
         right = s_multiply(right, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
         camera.position = add(right, camera.position);
     }
-
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        vec3f forward = get_first_person_camera_front(camera);
+        vec3f right = get_first_person_camera_right(camera);
+        vec3f up = cross_product(right, forward);
+        up = s_multiply(up, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
+        camera.position = add(camera.position, up);
+    }
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    {
+        vec3f forward = get_first_person_camera_front(camera);
+        vec3f right = get_first_person_camera_right(camera);
+        vec3f down = cross_product(forward, right);
+        down = s_multiply(down, (delta_time * OBJ_VIEWER_CAMERA_MOVEMENT_COEF));
+        camera.position = add(camera.position, down);
+    }
 }
