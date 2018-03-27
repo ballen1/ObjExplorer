@@ -27,37 +27,38 @@ e2_mesh::get_vertex(int v_idx)
 size_t
 e2_mesh::get_vertex_count()
 {
-    return vertices.size();
+    return (vertices.size() / 3);
 }
 
 size_t
 e2_mesh::get_normal_count()
 {
-    return vertex_normals.size();
+    return (vertex_normals.size() / 3);
 }
 
 size_t
 e2_mesh::get_face_count()
 {
-    return faces.size();
+    // TODO: for now, just triangles
+    return (faces.size() / 3);
 }
 
 size_t
 e2_mesh::get_vertex_data_size()
 {
-    return vertices.size() * 3;
+    return vertices.size();
 }
 
 size_t
 e2_mesh::get_normal_data_size()
 {
-    return vertex_normals.size() * 3;
+    return vertex_normals.size();
 }
 
 size_t
 e2_mesh::get_face_data_size()
 {
-    return faces.size() * 3;
+    return faces.size();
 }
 
 float*

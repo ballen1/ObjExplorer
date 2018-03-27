@@ -71,7 +71,7 @@ main(int argc, char** argv)
 
         std::vector<float> render_buf_data;
         float* v_data = mesh.get_raw_vertex_data();
-        float* n_data = mesh.get_raw_vertex_data();
+        float* n_data = mesh.get_raw_normal_data();
 
         if (v_count == n_count)
         {
@@ -85,47 +85,7 @@ main(int argc, char** argv)
                 render_buf_data.push_back(n_data[(i * 3) + 2]);
             }
         }
-/*
-        obj_file capsule("donut5.obj");
-        capsule.read_file();
 
-        vec3f* verts;
-        int num_verts;
-
-        capsule.get_vertices(&verts, num_verts);
-
-        face3f* faces;
-        int num_faces;
-
-        capsule.get_faces(&faces, num_faces);
-
-        vec3f* normals;
-        int num_normals;
-
-        capsule.get_vertex_normals(&normals, num_normals);
-
-        std::vector<float> vert_arr;
-        std::vector<unsigned int> vert_indices;
-        std::vector<float> vert_normals;
-
-        for (int v = 0; v < num_verts; v++)
-        {
-            vert_arr.push_back(verts[v].x);
-            vert_arr.push_back(verts[v].y);
-            vert_arr.push_back(verts[v].z);
-            vert_arr.push_back(normals[v].x);
-            vert_arr.push_back(normals[v].y);
-            vert_arr.push_back(normals[v].z);
-        }
-
-        for (int i = 0; i < num_faces; i++)
-        {
-            vert_indices.push_back(faces[i].v1);
-            vert_indices.push_back(faces[i].v2);
-            vert_indices.push_back(faces[i].v3);
-        }
-
-*/
         glUseProgram(shader_program);
 
         unsigned int VBO, VAO, EBO;
@@ -196,7 +156,7 @@ main(int argc, char** argv)
             glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, projection_mat.mat);
 
             glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, mesh.get_face_count(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, mesh.get_face_data_size(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             glfwSwapBuffers(window);
