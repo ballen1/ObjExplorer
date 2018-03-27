@@ -64,8 +64,28 @@ main(int argc, char** argv)
     GLuint shader_program;
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
-        //e2_mesh diamondmesh("magnolia.obj");
+        e2_mesh mesh("donut5.obj");
 
+        size_t v_count = mesh.get_vertex_count();
+        size_t n_count = mesh.get_normal_count();
+
+        std::vector<float> render_buf_data;
+        float* v_data = mesh.get_raw_vertex_data();
+        float* n_data = mesh.get_raw_vertex_data();
+
+        if (v_count == n_count)
+        {
+            for (int i = 0; i < v_count; i++)
+            {
+                render_buf_data.push_back(v_data[(i * 3)]);
+                render_buf_data.push_back(v_data[(i * 3) + 1]);
+                render_buf_data.push_back(v_data[(i * 3) + 2]);
+                render_buf_data.push_back(n_data[(i * 3)]);
+                render_buf_data.push_back(n_data[(i * 3) + 1]);
+                render_buf_data.push_back(n_data[(i * 3) + 2]);
+            }
+        }
+/*
         obj_file capsule("donut5.obj");
         capsule.read_file();
 
@@ -105,6 +125,7 @@ main(int argc, char** argv)
             vert_indices.push_back(faces[i].v3);
         }
 
+*/
         glUseProgram(shader_program);
 
         unsigned int VBO, VAO, EBO;
@@ -113,11 +134,11 @@ main(int argc, char** argv)
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vert_arr.size()*sizeof(float), vert_arr.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, render_buf_data.size()*sizeof(float), render_buf_data.data(), GL_STATIC_DRAW);
 
         glGenBuffers(1, &EBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, vert_indices.size()*sizeof(int), vert_indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.get_face_data_size()*sizeof(unsigned int), mesh.get_raw_face_data(), GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
@@ -175,7 +196,7 @@ main(int argc, char** argv)
             glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, projection_mat.mat);
 
             glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, vert_indices.size(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, mesh.get_face_count(), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             glfwSwapBuffers(window);

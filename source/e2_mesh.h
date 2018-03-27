@@ -15,7 +15,20 @@ public:
 
     vec3f get_vertex(int v_idx);
 
+    size_t get_vertex_count();
+    size_t get_normal_count();
+    size_t get_face_count();
+
+    size_t get_vertex_data_size();
+    size_t get_normal_data_size();
+    size_t get_face_data_size();
+
+    float* get_raw_vertex_data();
+    float* get_raw_normal_data();
+    unsigned int* get_raw_face_data();
+
     void set_vertex_normal(int v_idx, vec3f norm);
+
 
 private:
     bool load_mesh_from_file(std::string file);

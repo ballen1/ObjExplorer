@@ -24,6 +24,60 @@ e2_mesh::get_vertex(int v_idx)
     return vert;
 }
 
+size_t
+e2_mesh::get_vertex_count()
+{
+    return vertices.size();
+}
+
+size_t
+e2_mesh::get_normal_count()
+{
+    return vertex_normals.size();
+}
+
+size_t
+e2_mesh::get_face_count()
+{
+    return faces.size();
+}
+
+size_t
+e2_mesh::get_vertex_data_size()
+{
+    return vertices.size() * 3;
+}
+
+size_t
+e2_mesh::get_normal_data_size()
+{
+    return vertex_normals.size() * 3;
+}
+
+size_t
+e2_mesh::get_face_data_size()
+{
+    return faces.size() * 3;
+}
+
+float*
+e2_mesh::get_raw_vertex_data()
+{
+    return vertices.data();
+}
+
+float*
+e2_mesh::get_raw_normal_data()
+{
+    return vertex_normals.data();
+}
+
+unsigned int*
+e2_mesh::get_raw_face_data()
+{
+    return faces.data();
+}
+
 void
 e2_mesh::set_vertex_normal(int v_idx, vec3f norm)
 {

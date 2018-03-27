@@ -155,6 +155,8 @@ obj_file::read_file()
         return false;
     }
 
+    in_file.close();
+
     return true;
 }
 
