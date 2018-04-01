@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "e2_mesh.h"
+#include "e2_render.h"
 
 perspective_projection p;
 first_person_camera camera;
@@ -61,49 +62,17 @@ main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, OBJ_VIEWER_VIEWPORT_WIDTH, OBJ_VIEWER_VIEWPORT_HEIGHT);
 
+    e2_render renderer;
+
     GLuint shader_program;
     if (CreateShaderProgram(&shader_program, "data\\shaders\\vertex.vert", "data\\shaders\\fragment.frag"))
     {
+        renderer.set_shader_program(shader_program);
+
         e2_mesh mesh("donut5.obj");
 
-        size_t v_count = mesh.get_vertex_count();
-        size_t n_count = mesh.get_normal_count();
-
-        std::vector<float> render_buf_data;
-        float* v_data = mesh.get_raw_vertex_data();
-        float* n_data = mesh.get_raw_normal_data();
-
-        if (v_count == n_count)
-        {
-            for (int i = 0; i < v_count; i++)
-            {
-                render_buf_data.push_back(v_data[(i * 3)]);
-                render_buf_data.push_back(v_data[(i * 3) + 1]);
-                render_buf_data.push_back(v_data[(i * 3) + 2]);
-                render_buf_data.push_back(n_data[(i * 3)]);
-                render_buf_data.push_back(n_data[(i * 3) + 1]);
-                render_buf_data.push_back(n_data[(i * 3) + 2]);
-            }
-        }
-
-        glUseProgram(shader_program);
-
-        unsigned int VBO, VAO, EBO;
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, render_buf_data.size()*sizeof(float), render_buf_data.data(), GL_STATIC_DRAW);
-
-        glGenBuffers(1, &EBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.get_face_data_size()*sizeof(unsigned int), mesh.get_raw_face_data(), GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
+        renderer.submit_render_mesh(&mesh);
+        renderer.update_render_buffer();
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();
@@ -142,9 +111,6 @@ main(int argc, char** argv)
 
             process_input(window);
 
-            glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
             view = get_view_matrix(camera);
 
             uniform_loc = glGetUniformLocation(shader_program, "view");
@@ -155,9 +121,7 @@ main(int argc, char** argv)
             uniform_loc = glGetUniformLocation(shader_program, "projection");
             glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, projection_mat.mat);
 
-            glBindVertexArray(VAO);
-            glDrawElements(GL_TRIANGLES, mesh.get_face_data_size(), GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
+            renderer.render_frame();
 
             glfwSwapBuffers(window);
 
