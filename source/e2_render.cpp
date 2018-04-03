@@ -67,7 +67,30 @@ e2_render::render_frame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, render_element_buffer.size(), GL_UNSIGNED_INT, 0);
+
+    unsigned int element_offset = 0;
+    unsigned int vertex_offset = 0;
+    for (int m = 0; m < render_meshes.size(); m++)
+    {
+        if (m > 0)
+        {
+            mat4f model = Mat4f();
+            model.mat[13] += 100.0;
+            int uniform_loc = glGetUniformLocation(shader_program, "model");
+            glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, model.mat);
+        }
+        else
+        {
+            mat4f model = Mat4f();
+            int uniform_loc = glGetUniformLocation(shader_program, "model");
+            glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, model.mat);
+        }
+
+        glDrawElementsBaseVertex(GL_TRIANGLES, render_meshes[m]->get_face_data_size(), GL_UNSIGNED_INT, (GLvoid*)(element_offset * sizeof(unsigned int)), vertex_offset);
+        element_offset += render_meshes[m]->get_face_data_size();
+        vertex_offset += render_meshes[m]->get_vertex_count();
+    }
+
     glBindVertexArray(0);
 }
 

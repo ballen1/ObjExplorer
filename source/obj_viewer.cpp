@@ -70,8 +70,10 @@ main(int argc, char** argv)
         renderer.set_shader_program(shader_program);
 
         e2_mesh mesh("donut5.obj");
+        e2_mesh mesh2("donut5.obj");
 
         renderer.submit_render_mesh(&mesh);
+        renderer.submit_render_mesh(&mesh2);
         renderer.update_render_buffer();
 
         // Matrix stuff is gonna go here.
