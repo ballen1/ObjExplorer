@@ -1,7 +1,7 @@
 #ifndef H_E2_MESH
 #define H_E2_MESH
 
-#include "obj_math.h"
+#include "e2_math.h"
 #include <string>
 #include <vector>
 

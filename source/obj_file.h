@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "obj_math.h"
+#include "e2_math.h"
 
 class obj_file
 {
