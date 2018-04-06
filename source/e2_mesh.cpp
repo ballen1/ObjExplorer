@@ -7,6 +7,25 @@ e2_mesh::e2_mesh(std::string file)
     load_mesh_from_file(file);
 }
 
+e2_mesh::e2_mesh(e2_plane plane)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        vertices.push_back(plane.points[i].x);
+        vertices.push_back(plane.points[i].y);
+        vertices.push_back(plane.points[i].z);
+
+        vertex_normals.push_back(plane.normals[i].x);
+        vertex_normals.push_back(plane.normals[i].y);
+        vertex_normals.push_back(plane.normals[i].z);
+    }
+
+    for (int i = 0; i < 6; i++)
+    {
+        faces.push_back(plane.faces[i]);
+    }
+}
+
 e2_mesh::~e2_mesh()
 {
 

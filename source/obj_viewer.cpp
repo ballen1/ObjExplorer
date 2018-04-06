@@ -73,15 +73,22 @@ main(int argc, char** argv)
         e2_mesh mesh("donut5.obj");
         e2_mesh mesh2("donut5.obj");
 
+        e2_plane myplane = define_plane(1000.0f);
+        e2_mesh mesh3(myplane);
+
+        mat4f plane_trans = Mat4f();
+        plane_trans.mat[13] = -200.0;
         e2_render_object object1(&mesh, Mat4f());
 
         mat4f teapot_loc = Mat4f();
-        teapot_loc.mat[13] = 200.0f;
+        teapot_loc.mat[13] = 100.0f;
 
         e2_render_object object2(&mesh2, teapot_loc);
+        e2_render_object object3(&mesh3, plane_trans);
 
         renderer.submit_render_object(&object1);
         renderer.submit_render_object(&object2);
+        renderer.submit_render_object(&object3);
 
         renderer.update_render_buffer();
 
@@ -90,7 +97,7 @@ main(int argc, char** argv)
 
         camera.position.x = 0.0f;
         camera.position.y = 0.0f;
-        camera.position.z = 150.0f;
+        camera.position.z = 250.0f;
 
         camera.pitch = 0.0f;
         camera.yaw = 0.0f;
@@ -105,8 +112,7 @@ main(int argc, char** argv)
         
         mat4f projection_mat = get_perspective_projection(p);
 
-        int uniform_loc = glGetUniformLocation(shader_program, "model");
-        glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, model.mat); 
+        int uniform_loc;
 
         uniform_loc = glGetUniformLocation(shader_program, "view");
         glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, view.mat);

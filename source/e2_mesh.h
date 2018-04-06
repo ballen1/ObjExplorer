@@ -2,6 +2,7 @@
 #define H_E2_MESH
 
 #include "e2_math.h"
+#include "e2_gfx_primitive.h"
 #include <string>
 #include <vector>
 
@@ -11,6 +12,7 @@ class e2_mesh
 {
 public:
     e2_mesh(std::string file);
+    e2_mesh(e2_plane plane);
     ~e2_mesh();
 
     vec3f get_vertex(int v_idx);
