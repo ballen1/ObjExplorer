@@ -13,7 +13,6 @@ public:
     e2_render();
     ~e2_render();
 
-    void submit_render_mesh(e2_mesh *mesh);
     void submit_render_object(e2_render_object* object);
     void update_render_buffer();
     void render_frame();
@@ -21,7 +20,6 @@ public:
     void set_shader_program(GLuint shader);
 
 private:
-    std::vector<e2_mesh*> render_meshes;
     std::vector<e2_render_object*> render_objects;
     
     std::vector<float> render_buffer_data;

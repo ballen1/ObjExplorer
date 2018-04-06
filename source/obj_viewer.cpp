@@ -39,7 +39,7 @@ main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(OBJ_VIEWER_WINDOW_WIDTH, OBJ_VIEWER_WINDOW_HEIGHT,
-                                "3D Model Viewer", nullptr, nullptr);
+                                "Teapot Teapot Teapot Teapot Teapot Teapot Teapot Teapot", nullptr, nullptr);
 
     if (!window)
     {
@@ -80,22 +80,8 @@ main(int argc, char** argv)
 
         e2_render_object object2(&mesh2, teapot_loc);
 
-        renderer.submit_render_mesh(&mesh);
-        renderer.submit_render_mesh(&mesh2);
-
         renderer.submit_render_object(&object1);
         renderer.submit_render_object(&object2);
-
-        e2_render_object* teapots[100];
-
-        for (int i = 0; i < 100; i++)
-        {
-            mat4f teapot_mat = Mat4f();
-            teapot_loc.mat[13] = 100 * i;
-
-            teapots[i] = new e2_render_object(&mesh, teapot_loc);
-            renderer.submit_render_object(teapots[i]);
-        }
 
         renderer.update_render_buffer();
 
@@ -104,7 +90,7 @@ main(int argc, char** argv)
 
         camera.position.x = 0.0f;
         camera.position.y = 0.0f;
-        camera.position.z = 250.0f;
+        camera.position.z = 150.0f;
 
         camera.pitch = 0.0f;
         camera.yaw = 0.0f;
@@ -115,7 +101,7 @@ main(int argc, char** argv)
         p.height = OBJ_VIEWER_WINDOW_HEIGHT;
         p.vertical_fov = 45.0f;
         p.near_plane = 0.1f;
-        p.far_plane = 10000.0f;
+        p.far_plane = 100000.0f;
         
         mat4f projection_mat = get_perspective_projection(p);
 
