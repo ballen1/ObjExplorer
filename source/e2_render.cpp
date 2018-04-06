@@ -96,3 +96,15 @@ e2_render::set_shader_program(GLuint shader)
     shader_program = shader;
     glUseProgram(shader_program);
 }
+
+void
+e2_render::set_active_camera(first_person_camera* cam)
+{
+    camera = cam;
+}
+
+void
+e2_render::set_active_projection(perspective_projection* proj)
+{
+    projection = proj;
+}

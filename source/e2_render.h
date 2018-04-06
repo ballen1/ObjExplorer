@@ -6,6 +6,7 @@
 
 #include "e2_mesh.h"
 #include "e2_render_object.h"
+#include "e2_math.h"
 
 class e2_render
 {
@@ -18,6 +19,8 @@ public:
     void render_frame();
 
     void set_shader_program(GLuint shader);
+    void set_active_camera(first_person_camera* cam);
+    void set_active_projection(perspective_projection* proj);
 
 private:
     std::vector<e2_render_object*> render_objects;
@@ -26,6 +29,9 @@ private:
     std::vector<unsigned int> render_element_buffer;
 
     GLuint shader_program;
+
+    first_person_camera* camera;
+    perspective_projection* projection;
 
     unsigned int vbo;
     unsigned int vao;

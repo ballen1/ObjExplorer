@@ -77,7 +77,7 @@ main(int argc, char** argv)
         e2_mesh mesh3(myplane);
 
         mat4f plane_trans = Mat4f();
-        plane_trans.mat[13] = -200.0;
+        plane_trans.mat[13] = -50.0;
         e2_render_object object1(&mesh, Mat4f());
 
         mat4f teapot_loc = Mat4f();
