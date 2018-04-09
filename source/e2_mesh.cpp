@@ -15,15 +15,17 @@ e2_mesh::e2_mesh(e2_plane plane)
         vertices.push_back(plane.points[i].y);
         vertices.push_back(plane.points[i].z);
 
-        normals.push_back(plane.normals[i].x);
-        normals.push_back(plane.normals[i].y);
-        normals.push_back(plane.normals[i].z);
+        normals.push_back(plane.normal.x);
+        normals.push_back(plane.normal.y);
+        normals.push_back(plane.normal.z);
     }
 
-    for (int i = 0; i < 6; i++)
-    {
-        faces.push_back(plane.faces[i]);
-    }
+    faces.push_back(0);
+    faces.push_back(3);
+    faces.push_back(2);
+    faces.push_back(2);
+    faces.push_back(1);
+    faces.push_back(0);
 }
 
 e2_mesh::e2_mesh(e2_box box)

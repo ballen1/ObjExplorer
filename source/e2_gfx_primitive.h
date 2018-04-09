@@ -8,15 +8,12 @@
 struct e2_plane
 {
     vec3f points[4];
-    vec3f normals[4];
-    unsigned int faces[6];
+    vec3f normal;
 };
 
 struct e2_box
 {
     vec3f points[8];
-    vec3f normals[6];
-    unsigned int faces[36];
 };
 
 e2_plane
