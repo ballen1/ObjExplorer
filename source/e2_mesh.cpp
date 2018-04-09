@@ -2,6 +2,15 @@
 
 #include "obj_file.h"
 
+struct e2_quad_face
+{
+    float buffer[36];
+};
+
+static
+e2_quad_face
+create_quad_face(vec3f p1, vec3f p2, vec3f p3, vec3f p4, vec3f normal);
+
 e2_mesh::e2_mesh(std::string file)
 {
     load_mesh_from_file(file);
@@ -30,9 +39,27 @@ e2_mesh::e2_mesh(e2_plane plane)
 
 e2_mesh::e2_mesh(e2_box box)
 {
+    e2_quad_face cube_faces[6];
+
+    cube_faces[0] = create_quad_face(box.points[0], box.points[3], box.points[2], box.points[1], Vec3f(1.0, 0.0, 0.0));
+    cube_faces[1] = create_quad_face(box.points[5], box.points[0], box.points[1], box.points[6], Vec3f(0.0, 0.0, 1.0));
+    cube_faces[2] = create_quad_face(box.points[6], box.points[1], box.points[2], box.points[7], Vec3f(0.0, 1.0, 0.0));
+    cube_faces[3] = create_quad_face(box.points[4], box.points[5], box.points[6], box.points[7], Vec3f(-1.0, 0.0, 0.0));
+    cube_faces[4] = create_quad_face(box.points[3], box.points[4], box.points[7], box.points[2], Vec3f(0.0, 0.0, -1.0));
+    cube_faces[5] = create_quad_face(box.points[4], box.points[3], box.points[0], box.points[5], Vec3f(0.0, -1.0, 0.0));
+
     for (int i = 0; i < 6; i++)
     {
+        for (int j = 0; j < 6; j++)
+        {
+            vertices.push_back(cube_faces[i].buffer[(j * 6)]);
+            vertices.push_back(cube_faces[i].buffer[(j * 6) + 1]);
+            vertices.push_back(cube_faces[i].buffer[(j * 6) + 2]);
 
+            normals.push_back(cube_faces[i].buffer[(j * 6) + 3]);
+            normals.push_back(cube_faces[i].buffer[(j * 6) + 4]);
+            normals.push_back(cube_faces[i].buffer[(j * 6) + 5]);
+        }
     }
 
     for (int i = 0; i < 36; i++)
@@ -188,3 +215,55 @@ e2_mesh::load_mesh_from_file(std::string file)
 
     return true;
 }
+
+static
+e2_quad_face
+create_quad_face(vec3f p1, vec3f p2, vec3f p3, vec3f p4, vec3f normal)
+{
+    e2_quad_face quad;
+
+    quad.buffer[0] = p1.x;
+    quad.buffer[1] = p1.y;
+    quad.buffer[2] = p1.z;
+    quad.buffer[3] = normal.x;
+    quad.buffer[4] = normal.y;
+    quad.buffer[5] = normal.z;
+
+    quad.buffer[6] = p2.x;
+    quad.buffer[7] = p2.y;
+    quad.buffer[8] = p2.z;
+    quad.buffer[9] = normal.x;
+    quad.buffer[10] = normal.y;
+    quad.buffer[11] = normal.z;
+
+    quad.buffer[12] = p3.x;
+    quad.buffer[13] = p3.y;
+    quad.buffer[14] = p3.z;
+    quad.buffer[15] = normal.x;
+    quad.buffer[16] = normal.y;
+    quad.buffer[17] = normal.z;
+
+    quad.buffer[18] = p3.x;
+    quad.buffer[19] = p3.y;
+    quad.buffer[20] = p3.z;
+    quad.buffer[21] = normal.x;
+    quad.buffer[22] = normal.y;
+    quad.buffer[23] = normal.z;
+
+    quad.buffer[24] = p4.x;
+    quad.buffer[25] = p4.y;
+    quad.buffer[26] = p4.z;
+    quad.buffer[27] = normal.x;
+    quad.buffer[28] = normal.y;
+    quad.buffer[29] = normal.z;
+
+    quad.buffer[30] = p1.x;
+    quad.buffer[31] = p1.y;
+    quad.buffer[32] = p1.z;
+    quad.buffer[33] = normal.x;
+    quad.buffer[34] = normal.y;
+    quad.buffer[35] = normal.z;
+
+    return quad;
+}
+

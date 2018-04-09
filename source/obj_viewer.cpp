@@ -75,6 +75,9 @@ main(int argc, char** argv)
 
         e2_plane myplane = define_plane(1000.0f);
         e2_mesh mesh3(myplane);
+        
+        e2_box mybox = define_box(200.0);
+        e2_mesh mesh4(mybox);
 
         mat4f plane_trans = Mat4f();
         plane_trans.mat[13] = -50.0;
@@ -86,9 +89,15 @@ main(int argc, char** argv)
         e2_render_object object2(&mesh2, teapot_loc);
         e2_render_object object3(&mesh3, plane_trans);
 
+        mat4f box_trans = Mat4f();
+        box_trans.mat[12] = 1000.0;
+        box_trans.mat[13] = 300.0;
+        e2_render_object object4(&mesh4, box_trans);
+
         renderer.submit_render_object(&object1);
         renderer.submit_render_object(&object2);
         renderer.submit_render_object(&object3);
+        renderer.submit_render_object(&object4);
 
         renderer.update_render_buffer();
 
