@@ -13,6 +13,7 @@ class e2_mesh
 public:
     e2_mesh(std::string file);
     e2_mesh(e2_plane plane);
+    e2_mesh(e2_box box);
     ~e2_mesh();
 
     vec3f get_vertex(int v_idx);
@@ -37,7 +38,7 @@ private:
 
     std::vector<float> vertices;
     std::vector<unsigned int> faces;
-    std::vector<float> vertex_normals;
+    std::vector<float> normals;
 };
 
 #endif

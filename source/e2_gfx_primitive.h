@@ -12,7 +12,17 @@ struct e2_plane
     unsigned int faces[6];
 };
 
+struct e2_box
+{
+    vec3f points[8];
+    vec3f normals[6];
+    unsigned int faces[36];
+};
+
 e2_plane
 define_plane(float length);
+
+e2_box
+define_box(float length);
 
 #endif

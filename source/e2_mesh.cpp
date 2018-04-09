@@ -15,14 +15,27 @@ e2_mesh::e2_mesh(e2_plane plane)
         vertices.push_back(plane.points[i].y);
         vertices.push_back(plane.points[i].z);
 
-        vertex_normals.push_back(plane.normals[i].x);
-        vertex_normals.push_back(plane.normals[i].y);
-        vertex_normals.push_back(plane.normals[i].z);
+        normals.push_back(plane.normals[i].x);
+        normals.push_back(plane.normals[i].y);
+        normals.push_back(plane.normals[i].z);
     }
 
     for (int i = 0; i < 6; i++)
     {
         faces.push_back(plane.faces[i]);
+    }
+}
+
+e2_mesh::e2_mesh(e2_box box)
+{
+    for (int i = 0; i < 8; i++)
+    {
+
+    }
+
+    for (int i = 0; i < 36; i++)
+    {
+        faces.push_back(box.faces[i]);
     }
 }
 
@@ -52,7 +65,7 @@ e2_mesh::get_vertex_count()
 size_t
 e2_mesh::get_normal_count()
 {
-    return (vertex_normals.size() / 3);
+    return (normals.size() / 3);
 }
 
 size_t
@@ -71,7 +84,7 @@ e2_mesh::get_vertex_data_size()
 size_t
 e2_mesh::get_normal_data_size()
 {
-    return vertex_normals.size();
+    return normals.size();
 }
 
 size_t
@@ -89,7 +102,7 @@ e2_mesh::get_raw_vertex_data()
 float*
 e2_mesh::get_raw_normal_data()
 {
-    return vertex_normals.data();
+    return normals.data();
 }
 
 unsigned int*
@@ -101,9 +114,9 @@ e2_mesh::get_raw_face_data()
 void
 e2_mesh::set_vertex_normal(int v_idx, vec3f norm)
 {
-    vertex_normals[v_idx * E2_MESH_VERTEX_TUPLE_SIZE] = norm.x;
-    vertex_normals[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 1] = norm.y;
-    vertex_normals[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 2] = norm.z;
+    normals[v_idx * E2_MESH_VERTEX_TUPLE_SIZE] = norm.x;
+    normals[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 1] = norm.y;
+    normals[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 2] = norm.z;
 }
 
 bool
@@ -116,7 +129,7 @@ e2_mesh::load_mesh_from_file(std::string file)
         return false;
     }
 
-    vec3f *verts, *normals;
+    vec3f *verts, *norms;
     face3f* in_faces;
     int num_verts, num_faces, num_normals;
 
@@ -125,11 +138,11 @@ e2_mesh::load_mesh_from_file(std::string file)
 
     if (model.has_vertex_normals())
     {
-        model.get_vertex_normals(&normals, num_normals);
+        model.get_vertex_normals(&norms, num_normals);
     }
     else
     {
-        vertex_normals.resize(num_verts);
+        normals.resize(num_verts);
     }
 
     for (int v = 0; v < num_verts; v++)
@@ -140,9 +153,9 @@ e2_mesh::load_mesh_from_file(std::string file)
 
         if (model.has_vertex_normals())
         {
-            vertex_normals.push_back(normals[v].x);
-            vertex_normals.push_back(normals[v].y);
-            vertex_normals.push_back(normals[v].z);
+            normals.push_back(norms[v].x);
+            normals.push_back(norms[v].y);
+            normals.push_back(norms[v].z);
         }
     }
 
