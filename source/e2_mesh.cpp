@@ -30,14 +30,14 @@ e2_mesh::e2_mesh(e2_plane plane)
 
 e2_mesh::e2_mesh(e2_box box)
 {
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 6; i++)
     {
 
     }
 
     for (int i = 0; i < 36; i++)
     {
-        faces.push_back(box.faces[i]);
+        faces.push_back(i);
     }
 }
 
