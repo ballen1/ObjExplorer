@@ -1,5 +1,8 @@
 #include "e2_render.h"
 
+#include "e2_material.h"
+#include "e2_types.h"
+
 e2_render::e2_render()
 {
     glGenVertexArrays(1, &vao);
@@ -81,6 +84,10 @@ e2_render::render_frame()
 
         int uniform_loc = glGetUniformLocation(shader_program, "model");
         glUniformMatrix4fv(uniform_loc, 1, GL_FALSE, render_objects[m]->get_mesh_model_transformation().mat);
+
+        uniform_loc = glGetUniformLocation(shader_program, "colour");
+        e2_material* mat = render_objects[m]->get_material();
+        glUniform3f(uniform_loc, mat->colour.r, mat->colour.g, mat->colour.b);
 
         glDrawElementsBaseVertex(GL_TRIANGLES, render_mesh->get_face_data_size(), GL_UNSIGNED_INT, (GLvoid*)(element_offset * sizeof(unsigned int)), vertex_offset);
         element_offset += render_mesh->get_face_data_size();

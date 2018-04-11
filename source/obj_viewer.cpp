@@ -8,6 +8,8 @@
 #include "e2_mesh.h"
 #include "e2_render.h"
 #include "e2_render_object.h"
+#include "e2_material.h"
+#include "e2_types.h"
 
 perspective_projection p;
 first_person_camera camera;
@@ -70,6 +72,19 @@ main(int argc, char** argv)
     {
         renderer.set_shader_program(shader_program);
 
+        e2_colour c1;
+        c1.r = 1;
+        c1.g = 1;
+        c1.b = 1;
+
+        e2_colour c2;
+        c2.r = 0.5;
+        c2.g = 0.8;
+        c2.b = 0.2;
+        
+        e2_material mat1(c1);
+        e2_material mat2(c2);
+
         e2_mesh mesh("donut5.obj");
         e2_mesh mesh2("donut5.obj");
 
@@ -93,6 +108,11 @@ main(int argc, char** argv)
         box_trans.mat[12] = 1000.0;
         box_trans.mat[13] = 300.0;
         e2_render_object object4(&mesh4, box_trans);
+
+        object1.assign_material(&mat1);
+        object2.assign_material(&mat2);
+        object3.assign_material(&mat1);
+        object4.assign_material(&mat2);
 
         renderer.submit_render_object(&object1);
         renderer.submit_render_object(&object2);
