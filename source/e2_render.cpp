@@ -115,3 +115,9 @@ e2_render::set_active_projection(perspective_projection* proj)
 {
     projection = proj;
 }
+
+void
+e2_render::add_pointlight(e2_pointlight* light)
+{
+    point_lights.push_back(light);
+}
