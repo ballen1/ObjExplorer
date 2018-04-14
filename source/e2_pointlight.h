@@ -12,6 +12,9 @@ public:
 
     vec3f position;
     e2_colour colour;
+
+    float ambient_strength;
+    float diffuse_strength;
 };
 
 #endif

@@ -2,6 +2,7 @@
 
 #include "e2_material.h"
 #include "e2_types.h"
+#include <string>
 
 e2_render::e2_render()
 {
@@ -120,4 +121,26 @@ void
 e2_render::add_pointlight(e2_pointlight* light)
 {
     point_lights.push_back(light);
+
+    int uniform_loc = glGetUniformLocation(shader_program, "active_point_lights");
+    glUniform1i(uniform_loc, point_lights.size());
+
+    int index = point_lights.size() - 1;
+
+    std::string position_str("point_lights[%d].position", index);
+    std::string colour_str("point_lights[%d].colour", index);
+    std::string ambient_strength_str("point_lights[%d].ambient_strength", index);
+    std::string diffuse_strength_str("point_lights[%d].diffuse_strength", index);
+
+    uniform_loc = glGetUniformLocation(shader_program, position_str.c_str()); 
+    glUniform3f(uniform_loc, light->position.x, light->position.y, light->position.z);
+
+    uniform_loc = glGetUniformLocation(shader_program, colour_str.c_str());
+    glUniform3f(uniform_loc, light->colour.r, light->colour.g, light->colour.b);
+
+    uniform_loc = glGetUniformLocation(shader_program, ambient_strength_str.c_str());
+    glUniform1i(uniform_loc, light->ambient_strength);
+
+    uniform_loc = glGetUniformLocation(shader_program, diffuse_strength_str.c_str());
+    glUniform1i(uniform_loc, light->diffuse_strength);
 }

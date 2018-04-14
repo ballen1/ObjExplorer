@@ -7,6 +7,9 @@ point_light
 {
     vec3 position;
     vec3 colour;
+
+    float ambient_strength;
+    float diffuse_strength;
 };
 
 out vec4 fragColor;
@@ -15,6 +18,9 @@ in vec3 fragPos;
 in vec3 fragNormal;
 
 uniform vec3 colour;
+
+uniform int active_point_lights;
+uniform point_light point_lights[NUMBER_POINT_LIGHTS];
 
 void
 main()
@@ -36,8 +42,17 @@ main()
 }
 
 vec3
-calculate_point_light_contribution(point_light light)
+calculate_point_light_contribution(point_light light, vec3 frag_pos, vec3 frag_norm)
 {
-    return vec3(0, 0, 0);
+    vec3 ambient = light.ambient_strength * light.colour;
+
+    vec3 norm = normalize(frag_norm);
+    vec3 light_dir = normalize(light.position - frag_pos);
+    float diffuse_contribution = max(dot(norm, light_dir), 0.0);
+    vec3 diffuse = diffuse_contribution * light.colour;
+
+    vec3 result = ambient + diffuse;
+
+    return result;
 }
 
