@@ -130,6 +130,9 @@ e2_render::add_pointlight(e2_pointlight* light)
     std::string position_str("point_lights[" + std::to_string(index) + "].position");
     std::string ambient_colour_str("point_lights[" + std::to_string(index) + "].ambient_colour");
     std::string diffuse_colour_str("point_lights[" + std::to_string(index) + "].diffuse_colour");
+    std::string atten_const_str("point_lights[" + std::to_string(index) + "].constant");
+    std::string atten_linear_str("point_lights[" + std::to_string(index) + "].linear");
+    std::string atten_quadratic_str("point_lights[" + std::to_string(index) + "].quadratic");
 
     uniform_loc = glGetUniformLocation(shader_program, position_str.c_str()); 
     glUniform3f(uniform_loc, light->position.x, light->position.y, light->position.z);
@@ -139,4 +142,13 @@ e2_render::add_pointlight(e2_pointlight* light)
 
     uniform_loc = glGetUniformLocation(shader_program, diffuse_colour_str.c_str());
     glUniform3f(uniform_loc, light->diffuse_colour.r, light->diffuse_colour.g, light->diffuse_colour.b);
+
+    uniform_loc = glGetUniformLocation(shader_program, atten_const_str.c_str());
+    glUniform1f(uniform_loc, light->atten_constant);
+
+    uniform_loc = glGetUniformLocation(shader_program, atten_linear_str.c_str());
+    glUniform1f(uniform_loc, light->atten_linear);
+
+    uniform_loc = glGetUniformLocation(shader_program, atten_quadratic_str.c_str());
+    glUniform1f(uniform_loc, light->atten_quadratic);
 }

@@ -13,6 +13,10 @@ public:
     vec3f position;
     e2_colour ambient_colour;
     e2_colour diffuse_colour;
+
+    float atten_constant;
+    float atten_linear;
+    float atten_quadratic;
 };
 
 #endif

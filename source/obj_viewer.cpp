@@ -81,6 +81,9 @@ main(int argc, char** argv)
         light_col.g = 1.0;
         light_col.b = 1.0;
         e2_pointlight main_light(light_pos, light_col, light_col);
+        main_light.atten_constant = 1.0;
+        main_light.atten_linear = 0.0018;
+        main_light.atten_quadratic = 0.0000009;
 
         renderer.add_pointlight(&main_light);
 
