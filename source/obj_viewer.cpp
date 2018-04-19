@@ -80,24 +80,20 @@ main(int argc, char** argv)
         light_col.r = 1.0;
         light_col.g = 1.0;
         light_col.b = 1.0;
-        e2_pointlight main_light(light_pos, light_col);
-        main_light.ambient_strength = 0.1;
-        main_light.diffuse_strength = 1.0; 
+        e2_pointlight main_light(light_pos, light_col, light_col);
 
         renderer.add_pointlight(&main_light);
 
         light_pos.x = 500;
-        light_pos.y = 1500;
+        light_pos.y = 800;
         light_pos.z = -500;
-        light_col.r = 0.0;
-        light_col.g = 1.0;
-        light_col.b = 0.0;
+        light_col.r = 0.4;
+        light_col.g = 0.4;
+        light_col.b = 1.0;
 
-        e2_pointlight sec_light(light_pos, light_col);
-        sec_light.ambient_strength = 0.1;
-        sec_light.diffuse_strength = 1.0;
+        e2_pointlight sec_light(light_pos, light_col, light_col);
 
-        renderer.add_pointlight(&sec_light);
+        //renderer.add_pointlight(&sec_light);
 
         e2_colour c1;
         c1.r = 0.2;

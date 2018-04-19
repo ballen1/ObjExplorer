@@ -2,14 +2,16 @@
 
 #define NUMBER_POINT_LIGHTS 10
 
+#define POINT_LIGHT_CONSTANT_ATTEN 1.0
+#define POINT_LIGHT_LINEAR_ATTEN 0.0007
+#define POINT_LIGHT_QUADRATIC_ATTEN 0.000002
+
 struct
 point_light
 {
     vec3 position;
-    vec3 colour;
-
-    float ambient_strength;
-    float diffuse_strength;
+    vec3 ambient_colour;
+    vec3 diffuse_colour;
 };
 
 out vec4 fragColor;
@@ -42,12 +44,17 @@ main()
 vec3
 calculate_point_light_contribution(point_light light, vec3 frag_pos, vec3 frag_norm)
 {
-    vec3 ambient = light.ambient_strength * light.colour;
+    float distance = length(light.position - frag_pos);
+    float attenuation = (1.0 / (POINT_LIGHT_CONSTANT_ATTEN + (POINT_LIGHT_LINEAR_ATTEN * distance)
+                            + (POINT_LIGHT_QUADRATIC_ATTEN * distance * distance)));
+
+    vec3 ambient = attenuation * light.ambient_colour;
 
     vec3 norm = normalize(frag_norm);
     vec3 light_dir = normalize(light.position - frag_pos);
     float diffuse_contribution = max(dot(norm, light_dir), 0.0);
-    vec3 diffuse = diffuse_contribution * light.colour;
+    vec3 diffuse = diffuse_contribution * light.diffuse_colour;
+    diffuse *= attenuation;
 
     vec3 result = ambient + diffuse;
 

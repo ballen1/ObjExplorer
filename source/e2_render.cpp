@@ -128,19 +128,15 @@ e2_render::add_pointlight(e2_pointlight* light)
     int index = point_lights.size() - 1;
 
     std::string position_str("point_lights[" + std::to_string(index) + "].position");
-    std::string colour_str("point_lights[" + std::to_string(index) + "].colour");
-    std::string ambient_strength_str("point_lights[" + std::to_string(index) + "].ambient_strength");
-    std::string diffuse_strength_str("point_lights[" + std::to_string(index) + "].diffuse_strength");
+    std::string ambient_colour_str("point_lights[" + std::to_string(index) + "].ambient_colour");
+    std::string diffuse_colour_str("point_lights[" + std::to_string(index) + "].diffuse_colour");
 
     uniform_loc = glGetUniformLocation(shader_program, position_str.c_str()); 
     glUniform3f(uniform_loc, light->position.x, light->position.y, light->position.z);
 
-    uniform_loc = glGetUniformLocation(shader_program, colour_str.c_str());
-    glUniform3f(uniform_loc, light->colour.r, light->colour.g, light->colour.b);
+    uniform_loc = glGetUniformLocation(shader_program, ambient_colour_str.c_str());
+    glUniform3f(uniform_loc, light->ambient_colour.r, light->ambient_colour.g, light->ambient_colour.b);
 
-    uniform_loc = glGetUniformLocation(shader_program, ambient_strength_str.c_str());
-    glUniform1i(uniform_loc, light->ambient_strength);
-
-    uniform_loc = glGetUniformLocation(shader_program, diffuse_strength_str.c_str());
-    glUniform1i(uniform_loc, light->diffuse_strength);
+    uniform_loc = glGetUniformLocation(shader_program, diffuse_colour_str.c_str());
+    glUniform3f(uniform_loc, light->diffuse_colour.r, light->diffuse_colour.g, light->diffuse_colour.b);
 }

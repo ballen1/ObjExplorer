@@ -7,14 +7,12 @@
 class e2_pointlight
 {
 public:
-    e2_pointlight(vec3f pos, e2_colour col);
+    e2_pointlight(vec3f pos, e2_colour a_col, e2_colour d_col);
     ~e2_pointlight();
 
     vec3f position;
-    e2_colour colour;
-
-    float ambient_strength;
-    float diffuse_strength;
+    e2_colour ambient_colour;
+    e2_colour diffuse_colour;
 };
 
 #endif
