@@ -127,10 +127,10 @@ e2_render::add_pointlight(e2_pointlight* light)
 
     int index = point_lights.size() - 1;
 
-    std::string position_str("point_lights[%d].position", index);
-    std::string colour_str("point_lights[%d].colour", index);
-    std::string ambient_strength_str("point_lights[%d].ambient_strength", index);
-    std::string diffuse_strength_str("point_lights[%d].diffuse_strength", index);
+    std::string position_str("point_lights[" + std::to_string(index) + "].position");
+    std::string colour_str("point_lights[" + std::to_string(index) + "].colour");
+    std::string ambient_strength_str("point_lights[" + std::to_string(index) + "].ambient_strength");
+    std::string diffuse_strength_str("point_lights[" + std::to_string(index) + "].diffuse_strength");
 
     uniform_loc = glGetUniformLocation(shader_program, position_str.c_str()); 
     glUniform3f(uniform_loc, light->position.x, light->position.y, light->position.z);

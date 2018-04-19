@@ -72,15 +72,42 @@ main(int argc, char** argv)
     {
         renderer.set_shader_program(shader_program);
 
+        vec3f light_pos;
+        light_pos.x = -500;
+        light_pos.y = 500;
+        light_pos.z = 500;
+        e2_colour light_col;
+        light_col.r = 1.0;
+        light_col.g = 1.0;
+        light_col.b = 1.0;
+        e2_pointlight main_light(light_pos, light_col);
+        main_light.ambient_strength = 0.1;
+        main_light.diffuse_strength = 1.0; 
+
+        renderer.add_pointlight(&main_light);
+
+        light_pos.x = 500;
+        light_pos.y = 1500;
+        light_pos.z = -500;
+        light_col.r = 0.0;
+        light_col.g = 1.0;
+        light_col.b = 0.0;
+
+        e2_pointlight sec_light(light_pos, light_col);
+        sec_light.ambient_strength = 0.1;
+        sec_light.diffuse_strength = 1.0;
+
+        renderer.add_pointlight(&sec_light);
+
         e2_colour c1;
-        c1.r = 1;
+        c1.r = 0.2;
         c1.g = 1;
         c1.b = 1;
 
         e2_colour c2;
-        c2.r = 0.5;
-        c2.g = 0.8;
-        c2.b = 0.2;
+        c2.r = 1.0;
+        c2.g = 0.2;
+        c2.b = 0.8;
         
         e2_material mat1(c1);
         e2_material mat2(c2);
