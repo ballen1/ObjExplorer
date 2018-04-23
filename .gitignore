@@ -6,3 +6,4 @@ build.bat
 *.swo
 *.swn
 *.obj
+_vimrc

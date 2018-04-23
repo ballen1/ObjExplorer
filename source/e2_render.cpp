@@ -118,6 +118,21 @@ e2_render::set_active_projection(perspective_projection* proj)
 }
 
 void
+e2_render::add_direction_light(e2_direction_light* light)
+{
+    direction_light = light;
+
+    int uniform_loc = glGetUniformLocation(shader_program, "directional_light.direction");
+    glUniform3f(uniform_loc, light->direction.x, light->direction.y, light->direction.z); 
+    uniform_loc = glGetUniformLocation(shader_program, "directional_light.ambient");
+    glUniform3f(uniform_loc, light->ambient.r, light->ambient.g, light->ambient.g);
+    uniform_loc = glGetUniformLocation(shader_program, "directional_light.diffuse");
+    glUniform3f(uniform_loc, light->diffuse.r, light->diffuse.g, light->diffuse.b);
+    uniform_loc = glGetUniformLocation(shader_program, "directional_light.specular");
+    glUniform3f(uniform_loc, light->specular.r, light->specular.g, light->specular.b);
+}
+
+void
 e2_render::add_pointlight(e2_pointlight* light)
 {
     point_lights.push_back(light);

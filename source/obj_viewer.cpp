@@ -72,6 +72,26 @@ main(int argc, char** argv)
     {
         renderer.set_shader_program(shader_program);
 
+        vec3f dir;
+        dir.x = -250;
+        dir.y = -500;
+        dir.z = -500;
+        e2_colour dir_col;
+        dir_col.r = 0.1;
+        dir_col.g = 0.1;
+        dir_col.b = 0.1;
+
+        e2_direction_light mydirlight;
+        mydirlight.direction = dir;
+        mydirlight.ambient = dir_col;
+        dir_col.r = 1.0;
+        dir_col.g = 1.0;
+        dir_col.b = 1.0;
+        mydirlight.diffuse = dir_col;
+        mydirlight.specular = dir_col;
+
+        renderer.add_direction_light(&mydirlight);
+
         vec3f light_pos;
         light_pos.x = -500;
         light_pos.y = 500;
@@ -85,7 +105,7 @@ main(int argc, char** argv)
         main_light.atten_linear = 0.0018;
         main_light.atten_quadratic = 0.0000009;
 
-        renderer.add_pointlight(&main_light);
+//        renderer.add_pointlight(&main_light);
 
         light_pos.x = 500;
         light_pos.y = 800;
@@ -94,7 +114,7 @@ main(int argc, char** argv)
         light_col.g = 0.4;
         light_col.b = 1.0;
 
-        e2_pointlight sec_light(light_pos, light_col, light_col);
+ //       e2_pointlight sec_light(light_pos, light_col, light_col);
 
         //renderer.add_pointlight(&sec_light);
 
@@ -163,7 +183,7 @@ main(int argc, char** argv)
         p.height = OBJ_VIEWER_WINDOW_HEIGHT;
         p.vertical_fov = 45.0f;
         p.near_plane = 0.1f;
-        p.far_plane = 100000.0f;
+        p.far_plane = 10000.0f;
         
         mat4f projection_mat = get_perspective_projection(p);
 

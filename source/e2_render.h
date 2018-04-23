@@ -7,6 +7,7 @@
 #include "e2_mesh.h"
 #include "e2_render_object.h"
 #include "e2_math.h"
+#include "e2_direction_light.h"
 #include "e2_pointlight.h"
 
 class e2_render
@@ -23,6 +24,7 @@ public:
     void set_active_camera(first_person_camera* cam);
     void set_active_projection(perspective_projection* proj);
 
+    void add_direction_light(e2_direction_light* light);
     void add_pointlight(e2_pointlight* light);
 
 private:
@@ -31,6 +33,7 @@ private:
     std::vector<float> render_buffer_data;
     std::vector<unsigned int> render_element_buffer;
 
+    e2_direction_light* direction_light;
     std::vector<e2_pointlight*> point_lights;
 
     GLuint shader_program;

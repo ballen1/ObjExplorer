@@ -3,6 +3,16 @@
 #define NUMBER_POINT_LIGHTS 10
 
 struct
+direction_light
+{
+    vec3 direction;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct
 point_light
 {
     vec3 position;
@@ -21,9 +31,11 @@ in vec3 fragNormal;
 
 uniform vec3 colour;
 
+uniform direction_light directional_light;
 uniform int active_point_lights = 0;
 uniform point_light point_lights[NUMBER_POINT_LIGHTS];
 
+vec3 calculate_dir_light_contribution(direction_light light, vec3 frag_pos, vec3 frag_norm);
 vec3 calculate_point_light_contribution(point_light light, vec3 frag_pos, vec3 frag_norm);
 
 void
@@ -33,12 +45,27 @@ main()
 
     vec3 light_sum = vec3(0.0, 0.0, 0.0);
 
+    light_sum += objectColor * calculate_dir_light_contribution(directional_light, fragPos, fragNormal);
+
     for (int l = 0; l < active_point_lights; l++)
     {
         light_sum += objectColor * calculate_point_light_contribution(point_lights[l], fragPos, fragNormal);
     }
 
     fragColor = vec4(light_sum, 1.0);
+}
+
+vec3
+calculate_dir_light_contribution(direction_light light, vec3 frag_pos, vec3 frag_norm)
+{
+    vec3 light_norm = normalize(-light.direction);
+    vec3 norm = normalize(frag_norm);
+    float diffuse_contr = max(dot(light_norm, norm), 0);
+
+    vec3 diffuse = diffuse_contr * light.diffuse;
+    
+    vec3 result = diffuse + light.ambient;
+    return result;
 }
 
 vec3
