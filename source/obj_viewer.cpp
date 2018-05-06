@@ -84,9 +84,9 @@ main(int argc, char** argv)
         e2_direction_light mydirlight;
         mydirlight.direction = dir;
         mydirlight.ambient = dir_col;
-        dir_col.r = 1.0;
-        dir_col.g = 1.0;
-        dir_col.b = 1.0;
+        dir_col.r = 0.8;
+        dir_col.g = 0.8;
+        dir_col.b = 0.8;
         mydirlight.diffuse = dir_col;
         mydirlight.specular = dir_col;
 
@@ -103,20 +103,23 @@ main(int argc, char** argv)
         e2_pointlight main_light(light_pos, light_col, light_col);
         main_light.atten_constant = 1.0;
         main_light.atten_linear = 0.0018;
-        main_light.atten_quadratic = 0.0000009;
+        main_light.atten_quadratic = 0.000009;
 
 //        renderer.add_pointlight(&main_light);
 
         light_pos.x = 500;
         light_pos.y = 800;
         light_pos.z = -500;
-        light_col.r = 0.4;
+        light_col.r = 1.0; 
         light_col.g = 0.4;
-        light_col.b = 1.0;
+        light_col.b = 0.2;
 
- //       e2_pointlight sec_light(light_pos, light_col, light_col);
+        e2_pointlight sec_light(light_pos, light_col, light_col);
+        sec_light.atten_constant = 1.0;
+        sec_light.atten_linear = 0.0018;
+        sec_light.atten_quadratic = 0.00009; 
 
-        //renderer.add_pointlight(&sec_light);
+        renderer.add_pointlight(&sec_light);
 
         e2_colour c1;
         c1.r = 0.2;
