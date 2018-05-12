@@ -1,4 +1,4 @@
-#include "obj_viewer.h"
+#include "main.h"
 #include "obj_file.h"
 #include "BAL_ShaderUtility.h"
 #include "e2_math.h"
