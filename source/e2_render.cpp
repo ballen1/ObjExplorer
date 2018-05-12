@@ -1,7 +1,7 @@
 #include "e2_render.h"
 
 #include "e2_material.h"
-#include "e2_types.h"
+#include "e2_colour.h"
 #include <string>
 
 e2_render::e2_render()

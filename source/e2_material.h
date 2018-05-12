@@ -1,7 +1,7 @@
 #ifndef H_E2_MATERIAL
 #define H_E2_MATERIAL
 
-#include "e2_types.h"
+#include "e2_colour.h"
 
 class e2_material
 {

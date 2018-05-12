@@ -2,7 +2,7 @@
 #define H_E2_DIRECTION_LIGHT
 
 #include "e2_math.h"
-#include "e2_types.h"
+#include "e2_colour.h"
 
 class e2_direction_light
 {

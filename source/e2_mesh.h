@@ -32,7 +32,6 @@ public:
 
     void set_vertex_normal(int v_idx, vec3f norm);
 
-
 private:
     bool load_mesh_from_file(std::string file);
 

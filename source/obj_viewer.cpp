@@ -9,7 +9,7 @@
 #include "e2_render.h"
 #include "e2_render_object.h"
 #include "e2_material.h"
-#include "e2_types.h"
+#include "e2_colour.h"
 
 perspective_projection p;
 first_person_camera camera;
