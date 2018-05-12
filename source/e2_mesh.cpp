@@ -20,13 +20,16 @@ e2_mesh::e2_mesh(e2_plane plane)
 {
     for (int i = 0; i < 4; i++)
     {
-        vertices.push_back(plane.points[i].x);
-        vertices.push_back(plane.points[i].y);
-        vertices.push_back(plane.points[i].z);
+        e2_vertex new_vert;
+        new_vert.position.x = plane.points[i].x;
+        new_vert.position.y = plane.points[i].y;
+        new_vert.position.z = plane.points[i].z;
 
-        normals.push_back(plane.normal.x);
-        normals.push_back(plane.normal.y);
-        normals.push_back(plane.normal.z);
+        new_vert.normal.x = plane.normal.x;
+        new_vert.normal.y = plane.normal.y;
+        new_vert.normal.z = plane.normal.z;
+
+        vertices.push_back(new_vert);
     }
 
     faces.push_back(0);
@@ -52,13 +55,16 @@ e2_mesh::e2_mesh(e2_box box)
     {
         for (int j = 0; j < 6; j++)
         {
-            vertices.push_back(cube_faces[i].buffer[(j * 6)]);
-            vertices.push_back(cube_faces[i].buffer[(j * 6) + 1]);
-            vertices.push_back(cube_faces[i].buffer[(j * 6) + 2]);
+            e2_vertex new_vert;
+            new_vert.position.x = cube_faces[i].buffer[(j * 6)];
+            new_vert.position.y = cube_faces[i].buffer[(j * 6) + 1];
+            new_vert.position.z = cube_faces[i].buffer[(j * 6) + 2];
 
-            normals.push_back(cube_faces[i].buffer[(j * 6) + 3]);
-            normals.push_back(cube_faces[i].buffer[(j * 6) + 4]);
-            normals.push_back(cube_faces[i].buffer[(j * 6) + 5]);
+            new_vert.normal.x = cube_faces[i].buffer[(j * 6) + 3];
+            new_vert.normal.y = cube_faces[i].buffer[(j * 6) + 4];
+            new_vert.normal.z = cube_faces[i].buffer[(j * 6) + 5];
+
+            vertices.push_back(new_vert);
         }
     }
 
@@ -73,28 +79,16 @@ e2_mesh::~e2_mesh()
 
 }
 
-vec3f
+e2_vertex
 e2_mesh::get_vertex(int v_idx)
 {
-    vec3f vert;
-
-    vert.x = vertices[v_idx * E2_MESH_VERTEX_TUPLE_SIZE];
-    vert.y = vertices[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 1];
-    vert.z = vertices[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 2];
-
-    return vert;
+    return vertices[v_idx]; 
 }
 
 size_t
 e2_mesh::get_vertex_count()
 {
-    return (vertices.size() / 3);
-}
-
-size_t
-e2_mesh::get_normal_count()
-{
-    return (normals.size() / 3);
+    return vertices.size();
 }
 
 size_t
@@ -111,41 +105,21 @@ e2_mesh::get_vertex_data_size()
 }
 
 size_t
-e2_mesh::get_normal_data_size()
-{
-    return normals.size();
-}
-
-size_t
 e2_mesh::get_face_data_size()
 {
     return faces.size();
 }
 
-float*
+e2_vertex*
 e2_mesh::get_raw_vertex_data()
 {
     return vertices.data();
-}
-
-float*
-e2_mesh::get_raw_normal_data()
-{
-    return normals.data();
 }
 
 unsigned int*
 e2_mesh::get_raw_face_data()
 {
     return faces.data();
-}
-
-void
-e2_mesh::set_vertex_normal(int v_idx, vec3f norm)
-{
-    normals[v_idx * E2_MESH_VERTEX_TUPLE_SIZE] = norm.x;
-    normals[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 1] = norm.y;
-    normals[(v_idx * E2_MESH_VERTEX_TUPLE_SIZE) + 2] = norm.z;
 }
 
 bool
@@ -169,23 +143,22 @@ e2_mesh::load_mesh_from_file(std::string file)
     {
         model.get_vertex_normals(&norms, num_normals);
     }
-    else
-    {
-        normals.resize(num_verts);
-    }
 
     for (int v = 0; v < num_verts; v++)
     {
-        vertices.push_back(verts[v].x);
-        vertices.push_back(verts[v].y);
-        vertices.push_back(verts[v].z);
+        e2_vertex vert;
+        vert.position.x = verts[v].x;
+        vert.position.y = verts[v].y;
+        vert.position.z = verts[v].z;
 
         if (model.has_vertex_normals())
         {
-            normals.push_back(norms[v].x);
-            normals.push_back(norms[v].y);
-            normals.push_back(norms[v].z);
+            vert.normal.x = norms[v].x;
+            vert.normal.y = norms[v].y;
+            vert.normal.z = norms[v].z;
         }
+
+        vertices.push_back(vert);
     }
 
     for (int i = 0; i < num_faces; i++)
@@ -193,24 +166,6 @@ e2_mesh::load_mesh_from_file(std::string file)
         faces.push_back(in_faces[i].v1);
         faces.push_back(in_faces[i].v2);
         faces.push_back(in_faces[i].v3);
-
-        if (!model.has_vertex_normals())
-        {
-            vec3f v1, v2, v3;
-            v1 = get_vertex(in_faces[i].v1);
-            v2 = get_vertex(in_faces[i].v2);
-            v3 = get_vertex(in_faces[i].v3);
-
-            vec3f v_u = subtract(v1, v2);
-            vec3f v_w = subtract(v1, v3);
-
-            vec3f v_n = cross_product(v_u, v_w);
-            v_n = normalize(v_n);
-
-            set_vertex_normal(in_faces[i].v1, v_n);
-            set_vertex_normal(in_faces[i].v2, v_n);
-            set_vertex_normal(in_faces[i].v3, v_n);
-        }
     }
 
     return true;

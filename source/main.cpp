@@ -74,7 +74,7 @@ main(int argc, char** argv)
 
         vec3f dir;
         dir.x = -250;
-        dir.y = -500;
+        dir.y = -900;
         dir.z = -500;
         e2_colour dir_col;
         dir_col.r = 0.1;

@@ -31,22 +31,17 @@ e2_render::update_render_buffer()
         if (render_mesh)
         {
             size_t v_count = render_mesh->get_vertex_count();
-            size_t n_count = render_mesh->get_normal_count();
+            e2_vertex* v_data = render_mesh->get_raw_vertex_data();
 
-            float* v_data = render_mesh->get_raw_vertex_data();
-            float* n_data = render_mesh->get_raw_normal_data();
-
-            if (v_count == n_count)
+            for (int i = 0; i < v_count; i++)
             {
-                for (int i = 0; i < v_count; i++)
-                {
-                    render_buffer_data.push_back(v_data[(i * 3)]);
-                    render_buffer_data.push_back(v_data[(i * 3) + 1]);
-                    render_buffer_data.push_back(v_data[(i * 3) + 2]);
-                    render_buffer_data.push_back(n_data[(i * 3)]);
-                    render_buffer_data.push_back(n_data[(i * 3) + 1]);
-                    render_buffer_data.push_back(n_data[(i * 3) + 2]);
-                }
+                render_buffer_data.push_back(v_data[i].position.x);
+                render_buffer_data.push_back(v_data[i].position.y);
+                render_buffer_data.push_back(v_data[i].position.z);
+                
+                render_buffer_data.push_back(v_data[i].normal.x);
+                render_buffer_data.push_back(v_data[i].normal.y);
+                render_buffer_data.push_back(v_data[i].normal.z);
             }
 
             for (int e = 0; e < render_mesh->get_face_data_size(); e++)

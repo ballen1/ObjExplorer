@@ -2,6 +2,7 @@
 #define H_E2_MESH
 
 #include "e2_math.h"
+#include "e2_vertex.h"
 #include "e2_gfx_primitive.h"
 #include <string>
 #include <vector>
@@ -16,28 +17,22 @@ public:
     e2_mesh(e2_box box);
     ~e2_mesh();
 
-    vec3f get_vertex(int v_idx);
+    e2_vertex get_vertex(int v_idx);
 
     size_t get_vertex_count();
-    size_t get_normal_count();
     size_t get_face_count();
 
     size_t get_vertex_data_size();
-    size_t get_normal_data_size();
     size_t get_face_data_size();
 
-    float* get_raw_vertex_data();
-    float* get_raw_normal_data();
+    e2_vertex* get_raw_vertex_data();
     unsigned int* get_raw_face_data();
-
-    void set_vertex_normal(int v_idx, vec3f norm);
 
 private:
     bool load_mesh_from_file(std::string file);
 
-    std::vector<float> vertices;
+    std::vector<e2_vertex> vertices;
     std::vector<unsigned int> faces;
-    std::vector<float> normals;
 };
 
 #endif
