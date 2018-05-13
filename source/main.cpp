@@ -10,6 +10,7 @@
 #include "e2_render_object.h"
 #include "e2_material.h"
 #include "e2_colour.h"
+#include "e2_bmp_file.h"
 
 perspective_projection p;
 first_person_camera camera;
@@ -26,6 +27,9 @@ void process_input(GLFWwindow* window);
 int
 main(int argc, char** argv)
 {
+    e2_bmp_file bmp_file;
+    load_bmp_file("C:\\Users\\brandona\\Desktop\\engine.bmp", bmp_file);
+
     GLFWwindow* window;
 
     if (!glfwInit())
