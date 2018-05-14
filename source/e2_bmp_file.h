@@ -17,11 +17,11 @@ struct e2_bmp_file_header
 
 struct e2_bmp_file_image_header
 {
-    unsigned char header_size[4];
-    unsigned char image_width[4];
-    unsigned char image_height[4];
-    unsigned char planes[2];
-    unsigned char bit_count[2];
+    uint32_t header_size;
+    uint32_t image_width;
+    uint32_t image_height;
+    uint16_t planes;
+    uint16_t bit_count;
 };
 
 struct e2_bmp_file
@@ -29,7 +29,7 @@ struct e2_bmp_file
     e2_bmp_file_header file_header;
     e2_bmp_file_image_header image_header;
 
-    unsigned char* pixel_data;
+    uint8_t* pixel_data;
 };
 
 bool
