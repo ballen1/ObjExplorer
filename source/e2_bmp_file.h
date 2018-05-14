@@ -2,6 +2,7 @@
 #define H_E2_BMP_FILE
 
 #include <stdint.h>
+#include "e2_image.h"
 
 #define E2_BMP_FILE_HEADER_LEN 14
 #define E2_BMP_FILE_IMAGE_HEADER_LEN 16
@@ -34,5 +35,8 @@ struct e2_bmp_file
 
 bool
 load_bmp_file(const char* file_path, e2_bmp_file& file);
+
+void
+create_image(e2_bmp_file& bmp, e2_image& image);
 
 #endif

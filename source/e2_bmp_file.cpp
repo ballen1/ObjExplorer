@@ -61,3 +61,11 @@ load_bmp_file(const char* file_path, e2_bmp_file& file)
 
     return true; 
 }
+
+void
+create_image(e2_bmp_file& bmp, e2_image& image)
+{
+    image.width = bmp.image_header.image_width;
+    image.height = bmp.image_header.image_height;
+    image.pixels = bmp.pixel_data;
+}

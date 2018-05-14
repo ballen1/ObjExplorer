@@ -9,6 +9,7 @@
 #include "e2_math.h"
 #include "e2_direction_light.h"
 #include "e2_pointlight.h"
+#include "e2_image.h"
 
 class e2_render
 {
@@ -27,6 +28,8 @@ public:
     void add_direction_light(e2_direction_light* light);
     void add_pointlight(e2_pointlight* light);
 
+    void add_texture(e2_image& image);
+
 private:
     std::vector<e2_render_object*> render_objects;
     
@@ -44,6 +47,8 @@ private:
     unsigned int vbo;
     unsigned int vao;
     unsigned int ebo;
+
+    unsigned int texture;
 };
 
 #endif

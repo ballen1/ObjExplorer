@@ -11,6 +11,7 @@
 #include "e2_material.h"
 #include "e2_colour.h"
 #include "e2_bmp_file.h"
+#include "e2_image.h"
 
 perspective_projection p;
 first_person_camera camera;
@@ -29,6 +30,8 @@ main(int argc, char** argv)
 {
     e2_bmp_file bmp_file;
     load_bmp_file("C:\\Users\\brandona\\Desktop\\engine.bmp", bmp_file);
+    e2_image test_image;
+    create_image(bmp_file, test_image);
 
     GLFWwindow* window;
 
@@ -173,6 +176,8 @@ main(int argc, char** argv)
         renderer.submit_render_object(&object4);
 
         renderer.update_render_buffer();
+
+        renderer.add_texture(test_image);
 
         // Matrix stuff is gonna go here.
         mat4f model = Mat4f();

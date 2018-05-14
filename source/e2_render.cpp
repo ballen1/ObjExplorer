@@ -69,7 +69,7 @@ e2_render::render_frame()
 {
     glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
     glBindVertexArray(vao);
 
     unsigned int element_offset = 0;
@@ -161,4 +161,19 @@ e2_render::add_pointlight(e2_pointlight* light)
 
     uniform_loc = glGetUniformLocation(shader_program, atten_quadratic_str.c_str());
     glUniform1f(uniform_loc, light->atten_quadratic);
+}
+
+void
+e2_render::add_texture(e2_image& image)
+{
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width, image.height, 0, GL_RGB, GL_UNSIGNED_BYTE, image.pixels);
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
