@@ -8,6 +8,7 @@
 struct e2_plane
 {
     vec3f points[4];
+    tex2f uvs[4];
     vec3f normal;
 };
 

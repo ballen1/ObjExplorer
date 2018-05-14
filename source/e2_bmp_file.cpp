@@ -39,16 +39,16 @@ load_bmp_file(const char* file_path, e2_bmp_file& file)
     if (file.image_header.bit_count == 24 || file.image_header.bit_count == 32)
     {
         size_t pixel_count= file.image_header.image_width * file.image_header.image_height;
-        size_t pixel_data_count = pixel_count * 3;
+        size_t pixel_data_count = pixel_count * 4;
         file.pixel_data = new uint8_t[pixel_data_count];
         size_t offset = file.file_header.offset_bits;
         
         for (int p = 0; p < pixel_count; p++)
         {
-
-            file.pixel_data[(p * 3)] = bmp_file_buffer[offset + (p * 3)];
-            file.pixel_data[(p * 3) + 1] = bmp_file_buffer[offset + (p * 3) + 1];
-            file.pixel_data[(p * 3) + 2] = bmp_file_buffer[offset + (p * 3) + 2];
+            file.pixel_data[(p * 4) + 2] = bmp_file_buffer[offset + (p * 4)];
+            file.pixel_data[(p * 4) + 1] = bmp_file_buffer[offset + (p * 4) + 1];
+            file.pixel_data[(p * 4)] = bmp_file_buffer[offset + (p * 4) + 2];
+            file.pixel_data[(p * 4) + 3] = bmp_file_buffer[offset + (p * 4) + 3];
         }
     }
     else

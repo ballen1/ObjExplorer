@@ -29,6 +29,9 @@ e2_mesh::e2_mesh(e2_plane plane)
         new_vert.normal.y = plane.normal.y;
         new_vert.normal.z = plane.normal.z;
 
+        new_vert.uv.u = plane.uvs[i].u;
+        new_vert.uv.v = plane.uvs[i].v;
+
         vertices.push_back(new_vert);
     }
 

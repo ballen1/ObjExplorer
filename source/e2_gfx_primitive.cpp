@@ -10,18 +10,26 @@ define_plane(float length)
     plane.points[0].x = extent;
     plane.points[0].y = 0.0;
     plane.points[0].z = extent;
+    plane.uvs[0].u = 1.0;
+    plane.uvs[0].v = 0.0;
 
     plane.points[1].x = extent;
     plane.points[1].y = 0.0;
     plane.points[1].z = -extent;
+    plane.uvs[1].u = 1.0;
+    plane.uvs[1].v = 1.0;
     
     plane.points[2].x = -extent;
     plane.points[2].y = 0.0;
     plane.points[2].z = -extent;
+    plane.uvs[2].u = 0.0;
+    plane.uvs[2].v = 1.0;
     
     plane.points[3].x = -extent;
     plane.points[3].y = 0.0;
     plane.points[3].z = extent;
+    plane.uvs[3].u = 0.0;
+    plane.uvs[3].v = 0.0;
 
     plane.normal.x = 0.0;
     plane.normal.y = 1.0;

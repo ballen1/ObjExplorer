@@ -28,8 +28,10 @@ out vec4 fragColor;
 
 in vec3 fragPos;
 in vec3 fragNormal;
+in vec2 fragUv;
 
 uniform vec3 colour;
+uniform sampler2D active_texture;
 
 uniform direction_light directional_light;
 uniform int active_point_lights = 0;
@@ -52,7 +54,7 @@ main()
         light_sum += objectColor * calculate_point_light_contribution(point_lights[l], fragPos, fragNormal);
     }
 
-    fragColor = vec4(light_sum, 1.0);
+    fragColor = vec4(light_sum, 1.0) * texture(active_texture, fragUv);
 }
 
 vec3
