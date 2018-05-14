@@ -42,6 +42,9 @@ e2_render::update_render_buffer()
                 render_buffer_data.push_back(v_data[i].normal.x);
                 render_buffer_data.push_back(v_data[i].normal.y);
                 render_buffer_data.push_back(v_data[i].normal.z);
+
+                render_buffer_data.push_back(v_data[i].uv.u);
+                render_buffer_data.push_back(v_data[i].uv.v);
             }
 
             for (int e = 0; e < render_mesh->get_face_data_size(); e++)
@@ -58,10 +61,11 @@ e2_render::update_render_buffer()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, render_element_buffer.size()*sizeof(unsigned int), render_element_buffer.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 }
 
 void
@@ -70,6 +74,7 @@ e2_render::render_frame()
     glClearColor(0.8f, 0.2f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    glBindTexture(GL_TEXTURE_2D, texture);
     glBindVertexArray(vao);
 
     unsigned int element_offset = 0;
